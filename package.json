@@ -1,7 +1,7 @@
 {
-  "name": "lokijs-collections",
-  "version": "0.1.0",
-  "description": "[lokijs-collections](https://github.com/TeamworkGuy2/lokijs-collections) Syncing to/from a Remote Data Source",
+  "name": "lokijs-collections-syncing",
+  "version": "0.1.1",
+  "description": "lokijs-collections syncing to/from a remote data source",
   "dependencies": {
     "lokijs-collections": "~0.13.0",
     "ts-mortar": "~0.7.2",
@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "~2.5.0",
+    "mocha": "~3.0.2",
     "typescript": "~1.8.9"
   },
   "scripts": {

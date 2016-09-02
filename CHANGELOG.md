@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.1.0](N/A) - 2016-06-01
+### [0.1.1](N/A) - 2016-09-02
+#### Changed
+* Renamed project from lokijs-collections-sync -> lokijs-collections-syncing
+
+
+--------
+### [0.1.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/fb777d373a2079e995255a06cfdca8082f8a7389) - 2016-06-01
 #### Added
 * Moved 'sync/' directory from [lokijs-collections](https://github.com/TeamworkGuy2/lokijs-collections) to this library
 
