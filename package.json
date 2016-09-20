@@ -1,10 +1,10 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "lokijs-collections syncing to/from a remote data source",
   "dependencies": {
-    "lokijs-collections": "~0.13.0",
-    "ts-mortar": "~0.7.2",
+    "lokijs-collections": "~0.14.0",
+    "ts-mortar": "~0.11.0",
     "ts-promises": "~0.1.0"
   },
   "devDependencies": {

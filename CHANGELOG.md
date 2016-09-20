@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.1.1](N/A) - 2016-09-02
+### [0.1.2](N/A) - 2016-09-19
+#### Changed
+* Updated ts-mortar dependency to latest version 0.11.0
+* Updated lokijs-collections dependency to latest version 0.14.0
+
+
+--------
+### [0.1.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/879bf2b2e37f3c25671c19302a37722fff231dd1) - 2016-09-02
 #### Changed
 * Renamed project from lokijs-collections-sync -> lokijs-collections-syncing
 
