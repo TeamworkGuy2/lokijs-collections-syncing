@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.1.2](N/A) - 2016-09-19
+### [0.1.3](N/A) - 2016-10-21
+#### Changed
+* Updated ts-promises dependency to latest version 0.2.0
+
+#### Fixed
+* Fixed a bug where promise was being rejecting and resolving when an error occurred
+
+
+--------
+### [0.1.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/62275392a12e8b1251930c98d021730955d8a675) - 2016-09-19
 #### Changed
 * Updated ts-mortar dependency to latest version 0.11.0
 * Updated lokijs-collections dependency to latest version 0.14.0

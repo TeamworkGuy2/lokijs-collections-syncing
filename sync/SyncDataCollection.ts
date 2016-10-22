@@ -19,10 +19,15 @@ import Defer = require("../../ts-promises/Defer");
  * @since 2016-1-29
  */
 class SyncDataCollection {
+    /** The name of the boolean property which indicates whether an object is deleted, true indicates that the object is deleted, false indicates that it is not deleted */
     private isDeletedPropName: string;
+    /** The name of the boolean property which indicates whether an object is synched or not, true indicates that the object is synched, false indicates that it is not synched and should be */
     private isSynchedPropName: string;
+    /** The name of the number (long) property containing a unix style millisecond UTC timestamp starting from Midnight Jan 1, 1970 */
     private lastModifiedPropName: string;
+    /** Get the last synched timestamp of a particular table */
     private getLastSyncDownTimestamp: (table: DataCollection<any, any>) => number;
+    /** Set the last synched timestamp of a particular table */
     private updateLastSyncDownTimestamp: (table: DataCollection<any, any>) => void;
 
 
@@ -92,6 +97,7 @@ class SyncDataCollection {
                 self.updateLastSyncDownTimestamp(table);
             } catch (err) {
                 syncFailure(err);
+                return;
             }
             dfd.resolve(null);
         }
@@ -144,7 +150,7 @@ class SyncDataCollection {
 
             return syncSetting.syncUpFunc(params, data).then(function (res) {
                 return res;
-            }, function (err): SyncError {
+            }, function (err): Throws<SyncError> {
                 throw {
                     collectionName: localColl.getName(),
                     syncingUp: true,

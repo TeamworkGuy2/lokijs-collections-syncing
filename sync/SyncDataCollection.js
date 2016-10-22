@@ -76,6 +76,7 @@ var SyncDataCollection = (function () {
             }
             catch (err) {
                 syncFailure(err);
+                return;
             }
             dfd.resolve(null);
         }
