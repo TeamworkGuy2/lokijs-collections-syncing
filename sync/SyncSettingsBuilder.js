@@ -25,9 +25,10 @@ var Arrays = require("../../ts-mortar/utils/Arrays");
 var SyncSettingsBuilder = (function () {
     function SyncSettingsBuilder() {
     }
-    SyncSettingsBuilder.prototype.addSettings = function (localCollection, primaryKeys, findFilterFunc, copyObjectFunc) {
+    SyncSettingsBuilder.prototype.addSettings = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc) {
         this.localCollection = localCollection;
         this.primaryKeys = Arrays.asArray(primaryKeys);
+        this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         this.findFilterFunc = findFilterFunc;
         this.copyObjectFunc = copyObjectFunc;
         return this;
@@ -35,6 +36,7 @@ var SyncSettingsBuilder = (function () {
     SyncSettingsBuilder.prototype.addSettingsInst = function (settings) {
         this.localCollection = settings.localCollection;
         this.primaryKeys = settings.primaryKeys;
+        this.hasPrimaryKeyCheckers = settings.hasPrimaryKeyCheckers;
         this.findFilterFunc = settings.findFilterFunc;
         this.copyObjectFunc = settings.copyObjectFunc;
         return this;
@@ -83,20 +85,22 @@ var SyncSettingsBuilder = (function () {
             .addSyncDownSettings(src)
             .addSyncUpSettings(src);
     };
-    SyncSettingsBuilder.fromSettingsConvert = function (localCollection, primaryKeys, findFilterFunc, copyObjectFunc, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
+    SyncSettingsBuilder.fromSettingsConvert = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
         var inst = new SyncSettingsBuilder();
         inst.localCollection = localCollection;
         inst.primaryKeys = Arrays.asArray(primaryKeys);
+        inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
         inst.convertUrlToSyncDownFunc = convertUrlToSyncDownFunc;
         inst.convertUrlToSyncUpFunc = convertUrlToSyncUpFunc;
         return inst;
     };
-    SyncSettingsBuilder.fromSettings = function (localCollection, primaryKeys, findFilterFunc, copyObjectFunc) {
+    SyncSettingsBuilder.fromSettings = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc) {
         var inst = new SyncSettingsBuilder();
         inst.localCollection = localCollection;
         inst.primaryKeys = Arrays.asArray(primaryKeys);
+        inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
         return inst;
@@ -105,6 +109,7 @@ var SyncSettingsBuilder = (function () {
         var inst = new SyncSettingsBuilder();
         inst.localCollection = settings.localCollection;
         inst.primaryKeys = settings.primaryKeys;
+        inst.hasPrimaryKeyCheckers = settings.hasPrimaryKeyCheckers;
         inst.findFilterFunc = settings.findFilterFunc;
         inst.copyObjectFunc = settings.copyObjectFunc;
         return inst;
@@ -116,6 +121,7 @@ var SyncSettingsBuilder = (function () {
         // sync settings
         inst.localCollection = table;
         inst.primaryKeys = tableModel.primaryKeys;
+        inst.hasPrimaryKeyCheckers = tableModel.primaryKeys.map(function (k) { return function (itm) { return !!itm[k]; }; });
         inst.copyObjectFunc = tableFuncs.copyFunc;
         // sync down
         inst.syncDownFunc = syncDownFunc;
@@ -138,16 +144,17 @@ var SyncSettingsBuilder;
      * Settings for syncing server data to and from a local data collection
      */
     var SyncSettingsImpl = (function () {
-        function SyncSettingsImpl(localCollection, primaryKeys, findFilterFunc, copyObj, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
+        function SyncSettingsImpl(localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObj, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
             this.localCollection = localCollection;
             this.primaryKeys = Arrays.asArray(primaryKeys);
+            this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
             this.findFilterFunc = findFilterFunc;
             this.copyObjectFunc = copyObj;
             this.convertUrlToSyncDownFunc = convertUrlToSyncDownFunc;
             this.convertUrlToSyncUpFunc = convertUrlToSyncUpFunc;
         }
         SyncSettingsImpl.copy = function (src) {
-            return new SyncSettingsImpl(src.localCollection, src.primaryKeys, src.findFilterFunc, src.copyObjectFunc, src.convertUrlToSyncDownFunc, src.convertUrlToSyncUpFunc);
+            return new SyncSettingsImpl(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc, src.convertUrlToSyncDownFunc, src.convertUrlToSyncUpFunc);
         };
         return SyncSettingsImpl;
     }());

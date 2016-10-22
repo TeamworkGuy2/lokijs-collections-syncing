@@ -25,13 +25,19 @@ var SyncDataCollection = (function () {
      * @param isDeletedPropName the name of the property on both local and remote data models which contains the item's 'deleted' boolean flag
      * @param isSynchedPropName the name of the property on both local and remote data models which contains the item's 'synched' boolean flag
      * @param lastModifiedPropName the name of the property on both local and remote data models which contains the item's last-modified unix style millisecond timestamp number
+     * @param [notifyActionStart] optional event listener type function which is called whenever a sync action starts, see {@link SyncAction}
+     * @param [notifyActionEnd] optional event listener type function which is called whenever a sync action finishes, see {@link SyncAction}. Note: this method is only called if the action is successful, see 'notifyActionFailure'
+     * @param [notifyActionFailure] optional event listener type function which is called whenever a sync action fails, see {@link SyncAction}
      */
-    function SyncDataCollection(getLastSyncDownTimestamp, updateLastSyncDownTimestamp, isDeletedPropName, isSynchedPropName, lastModifiedPropName) {
+    function SyncDataCollection(getLastSyncDownTimestamp, updateLastSyncDownTimestamp, isDeletedPropName, isSynchedPropName, lastModifiedPropName, notifyActionStart, notifyActionEnd, notifyActionFailure) {
         this.getLastSyncDownTimestamp = getLastSyncDownTimestamp;
         this.updateLastSyncDownTimestamp = updateLastSyncDownTimestamp;
         this.isDeletedPropName = isDeletedPropName;
         this.isSynchedPropName = isSynchedPropName;
         this.lastModifiedPropName = lastModifiedPropName;
+        this.notifyActionStart = notifyActionStart;
+        this.notifyActionEnd = notifyActionEnd;
+        this.notifyActionFailure = notifyActionFailure;
     }
     /** Sync down a set of data collections
      * @param <R> the sync down error type
@@ -68,11 +74,22 @@ var SyncDataCollection = (function () {
                 syncingDown: true,
                 error: err,
             });
+            if (self.notifyActionFailure) {
+                if (!isAfterSync) {
+                    self.notifyActionFailure("syncDown", table, syncDownTimer, err);
+                }
+                else {
+                    self.notifyActionFailure("afterSyncDownUpdate", table, afterSyncDownUpdateTimer, err);
+                }
+            }
         }
         function saveData() {
             // update the last sync time for this table to right now
             try {
                 self.updateLastSyncDownTimestamp(table);
+                if (self.notifyActionEnd) {
+                    self.notifyActionEnd("afterSyncDownUpdate", table, afterSyncDownUpdateTimer);
+                }
             }
             catch (err) {
                 syncFailure(err);
@@ -81,8 +98,16 @@ var SyncDataCollection = (function () {
             dfd.resolve(null);
         }
         try {
+            var syncDownTimer = this.notifyActionStart ? this.notifyActionStart("syncDown", table) : null;
+            var isAfterSync = false;
+            var afterSyncDownUpdateTimer = null;
             syncDownFunc(params).done(function (items) {
                 try {
+                    if (self.notifyActionEnd) {
+                        self.notifyActionEnd("syncDown", table, syncDownTimer);
+                    }
+                    isAfterSync = true;
+                    afterSyncDownUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncDownUpdate", table) : null;
                     var promise = processResultsCallback(items);
                     if (promise != null && promise["then"]) {
                         promise.then(saveData, syncFailure);
@@ -109,23 +134,36 @@ var SyncDataCollection = (function () {
      * only contains one record and send that one record as an object, rather than sending an
      * array of objects to the service call, false or undefined sends an array of any data in the collection
      */
-    SyncDataCollection.prototype.syncUpCollection = function (params, syncSetting, copyItemFunc) {
+    SyncDataCollection.prototype.syncUpCollection = function (params, syncSetting) {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
         var primaryKey = Arrays.getIfOneItem(primaryKeys);
+        var primaryKeyCheckers = syncSetting.hasPrimaryKeyCheckers;
+        var primaryKeyChecker = Arrays.getIfOneItem(primaryKeyCheckers);
         var localColl = syncSetting.localCollection;
-        return this.syncAndUpdateCollection(localColl, copyItemFunc, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
+        return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
+            var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
             var toSvcObj = syncSetting.convertToSvcObjectFunc;
             var data = null;
             if (primaryKey) {
-                data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKey, toSvcObj);
+                data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKeyChecker, toSvcObj);
             }
             else {
-                data = SyncDataCollection.checkAndConvertMultiKeyItems(localColl.getName(), items, primaryKeys, toSvcObj);
+                data = SyncDataCollection.checkAndConvertMultiKeyItems(localColl.getName(), items, primaryKeyCheckers, toSvcObj);
             }
+            if (self.notifyActionEnd) {
+                self.notifyActionEnd("beforeSyncUpPrep", localColl, beforeSyncUpPrepTimer);
+            }
+            var syncUpTimer = self.notifyActionStart ? self.notifyActionStart("syncUp", localColl) : null;
             return syncSetting.syncUpFunc(params, data).then(function (res) {
+                if (self.notifyActionEnd) {
+                    self.notifyActionEnd("syncUp", localColl, syncUpTimer);
+                }
                 return res;
             }, function (err) {
+                if (self.notifyActionFailure) {
+                    self.notifyActionFailure("syncUp", localColl, syncUpTimer, err);
+                }
                 throw {
                     collectionName: localColl.getName(),
                     syncingUp: true,
@@ -146,7 +184,7 @@ var SyncDataCollection = (function () {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
-    SyncDataCollection.prototype.syncAndUpdateCollection = function (table, copyItemFunc, primaryKey, primaryKeys, syncAction) {
+    SyncDataCollection.prototype.syncUpAndUpdateCollection = function (table, primaryKey, primaryKeys, syncAction) {
         var self = this;
         var dfd = Defer.newDefer();
         var synchedProp = {};
@@ -157,13 +195,16 @@ var SyncDataCollection = (function () {
             dfd.resolve(null);
             return dfd.promise;
         }
-        var itemsData = items.map(copyItemFunc);
-        syncAction(itemsData).done(function (res) {
+        syncAction(items).done(function (res) {
+            var afterSyncUpUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncUpUpdate", table) : null;
             if (primaryKey) {
                 self.updateSinglePrimaryKeyItems(table, items, primaryKey);
             }
             else {
                 self.updateMultiPrimaryKeyItems(table, items, primaryKeys);
+            }
+            if (self.notifyActionEnd) {
+                self.notifyActionEnd("afterSyncUpUpdate", table, afterSyncUpUpdateTimer);
             }
             dfd.resolve(res);
         }, function (err) {
@@ -261,14 +302,15 @@ var SyncDataCollection = (function () {
      * Else convert the item using the provided conversion function
      * @return the 'items' array converted to result objects
      */
-    SyncDataCollection.checkAndConvertMultiKeyItems = function (collName, items, primaryKeyFields, itemConverter) {
-        var keyCount = primaryKeyFields.length;
+    SyncDataCollection.checkAndConvertMultiKeyItems = function (collName, items, hasPrimaryKeyFuncs, itemConverter) {
+        var keyCount = hasPrimaryKeyFuncs.length;
         var resultItems = [];
         for (var i = 0, size = items.length; i < size; i++) {
             var item = items[i];
             var hasPrimaryKeys = true;
             for (var k = 0; k < keyCount; k++) {
-                if (!item[primaryKeyFields[k]]) {
+                var hasPrimaryKey = hasPrimaryKeyFuncs[k](item);
+                if (!hasPrimaryKey) {
                     hasPrimaryKeys = false;
                     break;
                 }
@@ -286,11 +328,11 @@ var SyncDataCollection = (function () {
      * Else convert the item using the provided conversion function
      * @return the 'items' array converted to result objects
      */
-    SyncDataCollection.checkAndConvertSingleKeyItems = function (collName, items, primaryKeyField, itemConverter) {
+    SyncDataCollection.checkAndConvertSingleKeyItems = function (collName, items, hasPrimaryKeyFunc, itemConverter) {
         var resultItems = [];
         for (var i = 0, size = items.length; i < size; i++) {
             var item = items[i];
-            var hasPrimaryKey = !!item[primaryKeyField];
+            var hasPrimaryKey = hasPrimaryKeyFunc(item);
             if (hasPrimaryKey) {
                 resultItems.push(itemConverter(item));
             }

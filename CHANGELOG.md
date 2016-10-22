@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.1.3](N/A) - 2016-10-21
+### [0.2.0](N/A) - 2016-10-22
+#### Added
+* Added 'hasPrimaryKeyCheckers' function array to SyncSettingsBuilder and interfaces to allow customization of primary key absense validation, default behavior is '!!item[primaryKey]' when validation functions are not provided
+* Added notifyAction(Start|End|Failure) event listener functions to SyncDataCollection making it easy to add performance timers, error loggers, etc.
+
+
+--------
+### [0.1.3](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/de86ccaf95682361ff21759eadb39cb2c24c512e) - 2016-10-21
 #### Changed
 * Updated ts-promises dependency to latest version 0.2.0
 
