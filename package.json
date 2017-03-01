@@ -1,6 +1,6 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "lokijs-collections syncing to/from a remote data source",
   "dependencies": {
     "lokijs-collections": "~0.14.0",

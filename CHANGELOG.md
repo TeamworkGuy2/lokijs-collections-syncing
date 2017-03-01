@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.2.0](N/A) - 2016-10-22
+### [0.3.0](N/A) - 2017-03-01
+#### Changed
+* Changed primary keys type from string to keyof
+* Changed syncDownCollection(...) `S[]` type to `S` since it's only returned by the sync function and then passed to the callback
+
+
+--------
+### [0.2.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/c679e2a9d32e2bb848bd3ce879c241fe9a487e77) - 2016-10-22
 #### Added
 * Added 'hasPrimaryKeyCheckers' function array to SyncSettingsBuilder and interfaces to allow customization of primary key absense validation, default behavior is '!!item[primaryKey]' when validation functions are not provided
 * Added notifyAction(Start|End|Failure) event listener functions to SyncDataCollection making it easy to add performance timers, error loggers, etc.

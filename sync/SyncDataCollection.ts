@@ -94,8 +94,8 @@ class SyncDataCollection {
      * @param <R1> the sync down function error type
      * @param <R2> the process results callback error type
      */
-    public syncDownCollection<E, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>, syncDownFunc: (params: P) => PsPromise<S[], R1>,
-            processResultsCallback: (items: S[]) => void | PsPromise<void, R2>): PsPromise<void, SyncError> {
+    public syncDownCollection<E, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>, syncDownFunc: (params: P) => PsPromise<S, R1>,
+            processResultsCallback: (results: S) => void | PsPromise<void, R2>): PsPromise<void, SyncError> {
         var self = this;
         var dfd = Defer.newDefer<void, SyncError>();
 
@@ -229,7 +229,7 @@ class SyncDataCollection {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
-    public syncUpAndUpdateCollection<E, F, R, S>(table: DataCollection<E, F>, primaryKey: string, primaryKeys: string[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R, S> {
+    public syncUpAndUpdateCollection<E, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R, S> {
         var self = this;
         var dfd = Defer.newDefer<R, S>();
 

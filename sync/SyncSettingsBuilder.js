@@ -138,7 +138,6 @@ var SyncSettingsBuilder = (function () {
     };
     return SyncSettingsBuilder;
 }());
-var SyncSettingsBuilder;
 (function (SyncSettingsBuilder) {
     /** SyncSettings class
      * Settings for syncing server data to and from a local data collection

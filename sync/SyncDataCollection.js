@@ -344,7 +344,6 @@ var SyncDataCollection = (function () {
     };
     return SyncDataCollection;
 }());
-var SyncDataCollection;
 (function (SyncDataCollection) {
     /** Definitions of how to sync down data and merge it with local data, currently includes:
      *  - REMOVE_DELETED_AND_MERGE_NEW
@@ -359,18 +358,18 @@ var SyncDataCollection;
             this.removeDeleted = removeDeleted;
             this.merge = merge;
         }
-        /** if a remote item is synched down with a deleted prop of 'true' delete it from the local collection (based on primary key) and addOrUpdateWhere(...) all other items */
-        SyncDownOp.REMOVE_DELETED_AND_MERGE_NEW = new SyncDownOp(false, true, true);
-        /** use addOrUpdateWhere(...) to merge each remote synched down item into the local collection */
-        SyncDownOp.REMOVE_NONE_AND_MERGE_NEW = new SyncDownOp(false, false, true);
-        /** remove all existing local collection items before using addAll(...) to add the remote synched down items to the local collection */
-        SyncDownOp.REMOVE_ALL_AND_ADD_NEW = new SyncDownOp(true, false, false);
-        /** if a remote item is synched down with a deleted prop of 'true' delete it from the local collection (based on primary key) and add(...) all other items */
-        SyncDownOp.REMOVE_DELETED_AND_ADD_NEW = new SyncDownOp(false, true, false);
-        /** no constraints, use addAll(...) to add the remote synched down items to the local collection */
-        SyncDownOp.REMOVE_NONE_AND_ADD_NEW = new SyncDownOp(false, false, false);
         return SyncDownOp;
     }());
+    /** if a remote item is synched down with a deleted prop of 'true' delete it from the local collection (based on primary key) and addOrUpdateWhere(...) all other items */
+    SyncDownOp.REMOVE_DELETED_AND_MERGE_NEW = new SyncDownOp(false, true, true);
+    /** use addOrUpdateWhere(...) to merge each remote synched down item into the local collection */
+    SyncDownOp.REMOVE_NONE_AND_MERGE_NEW = new SyncDownOp(false, false, true);
+    /** remove all existing local collection items before using addAll(...) to add the remote synched down items to the local collection */
+    SyncDownOp.REMOVE_ALL_AND_ADD_NEW = new SyncDownOp(true, false, false);
+    /** if a remote item is synched down with a deleted prop of 'true' delete it from the local collection (based on primary key) and add(...) all other items */
+    SyncDownOp.REMOVE_DELETED_AND_ADD_NEW = new SyncDownOp(false, true, false);
+    /** no constraints, use addAll(...) to add the remote synched down items to the local collection */
+    SyncDownOp.REMOVE_NONE_AND_ADD_NEW = new SyncDownOp(false, false, false);
     SyncDataCollection.SyncDownOp = SyncDownOp;
     /** A utility function for picking a 'SyncDownOp' based on a set of flags describing the desired syncing behavior
      * @param clearData true if all existing local data should be deleted before syncing down new data, false to keep local data (with some cavets)

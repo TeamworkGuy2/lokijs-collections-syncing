@@ -25,7 +25,7 @@
 class SyncSettingsBuilder<E, F, P, S, U, R> implements SettingsBuilder<E, F> {
     // sync settings
     localCollection: DataCollection<E, F>;
-    primaryKeys: string[];
+    primaryKeys: (keyof E)[];
     hasPrimaryKeyCheckers: ((obj: E) => boolean)[];
     findFilterFunc: (item: S) => F;
     copyObjectFunc: (item: E) => E;
@@ -43,12 +43,12 @@ class SyncSettingsBuilder<E, F, P, S, U, R> implements SettingsBuilder<E, F> {
     }
 
 
-    public addSettings(localCollection: DataCollection<E, F>, primaryKeys: string | string[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public addSettings(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E) {
 
         this.localCollection = localCollection;
-        this.primaryKeys = Arrays.asArray(primaryKeys);
+        this.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
         this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         this.findFilterFunc = findFilterFunc;
         this.copyObjectFunc = copyObjectFunc;
@@ -115,17 +115,17 @@ class SyncSettingsBuilder<E, F, P, S, U, R> implements SettingsBuilder<E, F> {
 
     public static copy<E1, F1, P1, S1, U1, R1>(src: SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>, deepCopy: boolean = true) {
         if (deepCopy) {
-            return new SyncSettingsBuilder().addSettingsInst(SyncSettingsBuilder.SyncSettingsImpl.copy(src))
+            return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettingsInst(SyncSettingsBuilder.SyncSettingsImpl.copy(src))
                 .addSyncDownSettings(SyncSettingsBuilder.SyncDownSettingsImpl.copy(src))
                 .addSyncUpSettings(SyncSettingsBuilder.SyncUpSettingsImpl.copy(src));
         }
-        return new SyncSettingsBuilder().addSettingsInst(src)
+        return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettingsInst(src)
             .addSyncDownSettings(src)
             .addSyncUpSettings(src);
     }
 
 
-    public static fromSettingsConvert<E, F, R>(localCollection: DataCollection<E, F>, primaryKeys: string | string[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public static fromSettingsConvert<E, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E,
             convertUrlToSyncDownFunc: (url: string) => (params: any) => PsPromise<any[], R>,
@@ -133,7 +133,7 @@ class SyncSettingsBuilder<E, F, P, S, U, R> implements SettingsBuilder<E, F> {
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
-        inst.primaryKeys = Arrays.asArray(primaryKeys);
+        inst.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
         inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
@@ -143,13 +143,13 @@ class SyncSettingsBuilder<E, F, P, S, U, R> implements SettingsBuilder<E, F> {
     }
 
 
-    public static fromSettings<E, F, R>(localCollection: DataCollection<E, F>, primaryKeys: string | string[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public static fromSettings<E, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E): SyncDownBuilder<E, F> & SyncUpBuilder<E, F> {
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
-        inst.primaryKeys = Arrays.asArray(primaryKeys);
+        inst.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
         inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
@@ -204,7 +204,7 @@ module SyncSettingsBuilder {
      */
     export class SyncSettingsImpl<E, F, S, R> implements SyncSettings<E, F, S, R> {
         localCollection: DataCollection<E, F>;
-        primaryKeys: string[];
+        primaryKeys: (keyof E)[];
         hasPrimaryKeyCheckers: ((obj: E) => boolean)[];
         findFilterFunc: (item: S) => F;
         copyObjectFunc: (item: E) => E;
@@ -212,14 +212,14 @@ module SyncSettingsBuilder {
         convertUrlToSyncUpFunc: (url: string) => (params: any, items: any[]) => PsPromise<any, R>;
 
 
-        constructor(localCollection: DataCollection<E, F>, primaryKeys: string | string[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+        constructor(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
                 findFilterFunc: (item: S) => F,
                 copyObj: (item: E) => E,
                 convertUrlToSyncDownFunc?: (url: string) => (params: any) => PsPromise<any[], R>,
                 convertUrlToSyncUpFunc?: (url: string) => (params: any, items: any[]) => PsPromise<any, R>) {
 
             this.localCollection = localCollection;
-            this.primaryKeys = Arrays.asArray(primaryKeys);
+            this.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
             this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
             this.findFilterFunc = findFilterFunc;
             this.copyObjectFunc = copyObj;
