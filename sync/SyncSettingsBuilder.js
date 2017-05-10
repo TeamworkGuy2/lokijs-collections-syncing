@@ -12,12 +12,12 @@ var Arrays = require("../../ts-mortar/utils/Arrays");
  * THEN
  *     .build()
  *
- * @param <E> the base local data type
- * @param <F> the base local data type with optional parameters for creating query objects
- * @param <P> sync up parameters
- * @param <S> remote data type
- * @param <U> sync up result
- * @param <R> sync error
+ * @template E the base local data type
+ * @template F the base local data type with optional parameters for creating query objects
+ * @template P sync up parameters
+ * @template S remote data type
+ * @template U sync up result
+ * @template R sync error
  *
  * @author TeamworkGuy2
  * @since 2016-3-7

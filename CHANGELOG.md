@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.3.0](N/A) - 2017-03-01
+### [0.3.1](N/A) - 2017-05-09
+#### Changed
+* Updated to TypeScript 2.3, added tsconfig.json, use @types/ definitions
+* Updated documentation to work better with Visual Studio
+
+
+--------
+### [0.3.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/bbbc22797eaf4663cbc0c9b5105a8a5e8fe06e15) - 2017-03-01
 #### Changed
 * Changed primary keys type from string to keyof
 * Changed syncDownCollection(...) `S[]` type to `S` since it's only returned by the sync function and then passed to the callback

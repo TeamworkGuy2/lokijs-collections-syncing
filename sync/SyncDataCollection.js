@@ -40,11 +40,12 @@ var SyncDataCollection = (function () {
         this.notifyActionFailure = notifyActionFailure;
     }
     /** Sync down a set of data collections
-     * @param <R> the sync down error type
+     * @template P the type of params to pass to each 'syncDownFunc' in the 'syncSettingsAry'
+     * @template R the sync down error type
      * @param params: parameters to pass to the sync function
      * @param syncSettingsAry: an array of SyncSettings object to sync
      * @param syncDownOp the type of sync to perform
-     * @return a map of {@code syncSettingsAry} collection names to the promises that will complete when they finish syncing
+     * @return a map of 'syncSettingsAry' collection names to the promises that will complete when they finish syncing
      */
     SyncDataCollection.prototype.syncDownCollections = function (params, syncSettingsAry, syncDownOp) {
         var promises = {};
@@ -59,11 +60,12 @@ var SyncDataCollection = (function () {
         return promises;
     };
     /** Sync down data from a server to a single local data collection
-     * @param <E> the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <F> the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <S> the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <R1> the sync down function error type
-     * @param <R2> the process results callback error type
+     * @template E the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template F the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template P the type of params to pass to the 'syncDownFunc'
+     * @template S the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template R1 the sync down function error type
+     * @template R2 the process results callback error type
      */
     SyncDataCollection.prototype.syncDownCollection = function (params, table, syncDownFunc, processResultsCallback) {
         var self = this;
@@ -127,9 +129,12 @@ var SyncDataCollection = (function () {
         return dfd.promise;
     };
     /** Using the URL, data collection, and other settings from 'syncSettings', synchronize data from a local data collection to a remove server
-     * @param <E> the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <F> the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <S> the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template E the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template F the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template P the type of params to pass to the 'syncSettings.syncUpFunc'
+     * @template S the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template U the 'syncUpFunc' response
+     * @template R the 'syncUpFunc' error
      * @param syncSetting: a sync settings objects containing the URL, data collection, and conversion functions needed to sync
      * only contains one record and send that one record as an object, rather than sending an
      * array of objects to the service call, false or undefined sends an array of any data in the collection
@@ -172,13 +177,14 @@ var SyncDataCollection = (function () {
             });
         });
     };
-    /** A wrapper around an {@code syncAction} function that syncs data to some destination.
-     * This function loads the items from storage for {@code syncAction} and is called back if the data transfer is successful or not.
+    /** A wrapper around a 'syncAction' function that syncs data to a destination.
+     * This function loads the items from storage for 'syncAction' and is called back if the data transfer is successful or not.
      * If the transfer is successful, the items in storage are updated to reflect that a sync has occurred.
-     * @param <E> the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <F> the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param <S> the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param dfd deferred object to reject or resolve once {@code syncAction} has completed or failed
+     * @template E the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template F the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @template R the 'syncAction' response type
+     * @template S the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
+     * @param dfd deferred object to reject or resolve once 'syncAction' has completed or failed
      * @param table the data source where data can be updated or retrieved
      * @param primaryKey the table data model's primary key, this or 'primaryKeys' must not be null, 'primaryKey' takes recedence
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null

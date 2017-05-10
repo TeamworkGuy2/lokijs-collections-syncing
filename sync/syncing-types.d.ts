@@ -29,12 +29,12 @@ declare interface SyncSettings<E, F, S, R> {
 
 
 /** Settings for syncing up (uploading) server data from a local data collection
- * @param <E> the client data collection type
- * @param <F> the client data collection type with optional properties
- * @param <P> the parameters to pass with the items
- * @param <S> the server data collection type
- * @param <U> the server response
- * @param <R> the server error
+ * @template E the client data collection type
+ * @template F the client data collection type with optional properties
+ * @template P the parameters to pass with the items
+ * @template S the server data collection type
+ * @template U the server response
+ * @template R the server error
  */
 declare interface SyncUpSettings<E, F, P, S, U, R> {
     syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>;
@@ -43,11 +43,11 @@ declare interface SyncUpSettings<E, F, P, S, U, R> {
 
 
 /** Settings for syncing down (downloading) server data to a local data collection
- * @param <E> the client data collection type
- * @param <F> the client data collection type with optional properties
- * @param <P> the parameters to pass with the items
- * @param <S> the server data collection type
- * @param <R> the server error
+ * @template F the client data collection type with optional properties
+ * @template P the parameters to pass with the items
+ * @template S the server data collection type
+ * @template R the server error
+ * @template E the client data collection type
  */
 declare interface SyncDownSettings<E, F, P, S, R> {
     syncDownFunc: (params: P) => PsPromise<S[], R>;
