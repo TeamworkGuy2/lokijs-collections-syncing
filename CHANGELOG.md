@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.3.1](N/A) - 2017-05-09
+### [0.4.0](N/A) - 2017-05-19
+#### Changed
+* Updated types to match lokijs-collections@0.19.1
+
+
+--------
+### [0.3.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/da47005500dca7b73d28c109ffc6336104002962) - 2017-05-09
 #### Changed
 * Updated to TypeScript 2.3, added tsconfig.json, use @types/ definitions
 * Updated documentation to work better with Visual Studio

@@ -1,6 +1,6 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "lokijs-collections syncing to/from a remote data source",
   "dependencies": {
     "lokijs-collections": "~0.14.0",
@@ -11,7 +11,7 @@
     "@types/chai": "~3.5.0",
     "@types/mocha": "~2.2.0",
     "chai": "~3.5.0",
-    "mocha": "~3.0.2",
+    "mocha": "~3.4.1",
     "typescript": "~2.3.0"
   },
   "scripts": {

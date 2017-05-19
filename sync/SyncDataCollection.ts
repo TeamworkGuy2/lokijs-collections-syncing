@@ -96,7 +96,7 @@ class SyncDataCollection {
      * @template R1 the sync down function error type
      * @template R2 the process results callback error type
      */
-    public syncDownCollection<E, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>, syncDownFunc: (params: P) => PsPromise<S, R1>,
+    public syncDownCollection<E extends F, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>, syncDownFunc: (params: P) => PsPromise<S, R1>,
             processResultsCallback: (results: S) => void | PsPromise<void, R2>): PsPromise<void, SyncError> {
         var self = this;
         var dfd = Defer.newDefer<void, SyncError>();
@@ -176,7 +176,7 @@ class SyncDataCollection {
      * only contains one record and send that one record as an object, rather than sending an
      * array of objects to the service call, false or undefined sends an array of any data in the collection
      */
-    public syncUpCollection<E, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U, SyncError> {
+    public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U, SyncError> {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
         var primaryKey = Arrays.getIfOneItem(primaryKeys);
@@ -235,7 +235,7 @@ class SyncDataCollection {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
-    public syncUpAndUpdateCollection<E, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R, S> {
+    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R, S> {
         var self = this;
         var dfd = Defer.newDefer<R, S>();
 
@@ -321,7 +321,7 @@ class SyncDataCollection {
      * @param isDeletedPropName the name of the property which indicates if an item should be deleted, if value of this property is truthy the item is deleted when the syncing, nullable
      * @param syncDownOp the type of merge/update/add operation to perform with the new items
      */
-    public static createAddUpdateOrRemoveItemsFunc<E, F, P, S, R>(syncSettings: SyncSettingsWithDown<E, F, P, S, R>, isDeletedPropName: string, syncDownOp: SyncDataCollection.SyncDownOp) {
+    public static createAddUpdateOrRemoveItemsFunc<E extends F, F, P, S, R>(syncSettings: SyncSettingsWithDown<E, F, P, S, R>, isDeletedPropName: string, syncDownOp: SyncDataCollection.SyncDownOp) {
         return function addUpdateOrRemoveItemsFunc(items: S[]) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;
