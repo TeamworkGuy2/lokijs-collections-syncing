@@ -56,55 +56,31 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
     }
 
 
-    public addSettingsInst(settings: SyncSettings<E, F, S, R>) {
-        this.localCollection = settings.localCollection;
-        this.primaryKeys = settings.primaryKeys;
-        this.hasPrimaryKeyCheckers = settings.hasPrimaryKeyCheckers;
-        this.findFilterFunc = settings.findFilterFunc;
-        this.copyObjectFunc = settings.copyObjectFunc;
-        return this;
-    }
-
-
-    public addSyncDownUrl(syncDownUrl: string, convertToLocalObjectFunc: (item: any) => E) {
+    public addSyncDownUrl<P1, S1, R1>(syncDownUrl: string, convertToLocalObjectFunc: (item: any) => E): SyncSettingsBuilder<E, F, P1, S1, U, R1> {
         this.syncDownFunc = this.convertUrlToSyncDownFunc(syncDownUrl);
         this.convertToLocalObjectFunc = convertToLocalObjectFunc;
-        return this;
+        return <any>this;
     }
 
 
-    public addSyncDownFunc(syncDownFunc: (params: P) => PsPromise<S[], R>, convertToLocalObjectFunc: (item: any) => E) {
-        this.syncDownFunc = syncDownFunc;
+    public addSyncDownFunc<P1, S1, R1>(syncDownFunc: (params: P1) => PsPromise<S1[], R1>, convertToLocalObjectFunc: (item: any) => E): SyncSettingsBuilder<E, F, P1, S1, U, R1> {
+        this.syncDownFunc = <any>syncDownFunc;
         this.convertToLocalObjectFunc = convertToLocalObjectFunc;
-        return this;
+        return <any>this;
     }
 
 
-    public addSyncDownSettings(syncDown: SyncDownSettings<E, F, P, S, R>) {
-        this.syncDownFunc = syncDown.syncDownFunc;
-        this.convertToLocalObjectFunc = syncDown.convertToLocalObjectFunc;
-        return this;
-    }
-
-
-    public addSyncUpUrl(syncUpUrl: string, convertToSvcObjectFunc: (item: E) => any) {
+    public addSyncUpUrl<P1, S1, R1>(syncUpUrl: string, convertToSvcObjectFunc: (item: E) => any): SyncSettingsBuilder<E, F, P1, S1, U, R1> {
         this.syncUpFunc = this.convertUrlToSyncUpFunc(syncUpUrl);
         this.convertToSvcObjectFunc = convertToSvcObjectFunc;
-        return this;
+        return <any>this;
     }
 
 
-    public addSyncUpFunc(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, convertToSvcObjectFunc: (item: E) => any) {
-        this.syncUpFunc = syncUpFunc;
+    public addSyncUpFunc<P1, S1, U1, R1>(syncUpFunc: (params: P1, items: S1[]) => PsPromise<U1, R1>, convertToSvcObjectFunc: (item: E) => any): SyncSettingsBuilder<E, F, P1, S1, U1, R1> {
+        this.syncUpFunc = <any>syncUpFunc;
         this.convertToSvcObjectFunc = convertToSvcObjectFunc;
-        return this;
-    }
-
-
-    public addSyncUpSettings(syncUp: SyncUpSettings<E, F, P, S, U, R>) {
-        this.syncUpFunc = syncUp.syncUpFunc;
-        this.convertToSvcObjectFunc = syncUp.convertToSvcObjectFunc;
-        return this;
+        return <any>this;
     }
 
 
@@ -115,13 +91,13 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
 
     public static copy<E1 extends F1, F1, P1, S1, U1, R1>(src: SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>, deepCopy: boolean = true) {
         if (deepCopy) {
-            return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettingsInst(SyncSettingsBuilder.SyncSettingsImpl.copy(src))
-                .addSyncDownSettings(SyncSettingsBuilder.SyncDownSettingsImpl.copy(src))
-                .addSyncUpSettings(SyncSettingsBuilder.SyncUpSettingsImpl.copy(src));
+            return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
+                .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
+                .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
         }
-        return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettingsInst(src)
-            .addSyncDownSettings(src)
-            .addSyncUpSettings(src);
+        return new SyncSettingsBuilder<E1, F1, P1, S1, U1, R1>().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
+            .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
+            .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
     }
 
 
@@ -284,13 +260,17 @@ module SyncSettingsBuilder {
 
 // ==== interfaces for building sync settings ====
 interface SettingsBuilder<E extends F, F> {
-    addSettingsInst<S, R>(settings: SyncSettings<E, F, S, R>): SyncDownBuilder<E, F> & SyncUpBuilder<E, F>;
-    addSettings<S>(localCollection: DataCollection<E, F>, primaryKeys: string | string[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[], findFilterFunc: (item: S) => F, copyObjectFunc: (item: E) => E): SyncDownBuilder<E, F> & SyncUpBuilder<E, F>;
+    addSettings<S>(
+        localCollection: DataCollection<E, F>,
+        primaryKeys: string | string[],
+        hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+        findFilterFunc: (item: S) => F,
+        copyObjectFunc: (item: E) => E
+    ): SyncDownBuilder<E, F> & SyncUpBuilder<E, F>;
 }
 
 
 interface SyncDownBuilder<E extends F, F> {
-    addSyncDownSettings<P, S, R>(syncDown: SyncDownSettings<E, F, P, S, R>): SyncDownAlreadyUpBuilder<E, F, P, S, R>;
     addSyncDownFunc<P, S, R>(syncDownFunc: (params: P) => PsPromise<S[], R>, convertToLocalObjectFunc: (item: S) => E): SyncDownAlreadyUpBuilder<E, F, P, S, R>;
 }
 
@@ -299,7 +279,6 @@ interface SyncDownBuilderWithUrl<E extends F, F> extends SyncDownBuilder<E, F> {
 }
 
 interface SyncUpBuilder<E extends F, F> {
-    addSyncUpSettings<P, S, U, R>(syncUp: SyncUpSettings<E, F, P, S, U, R>): SyncUpAlreadyDownBuilder<E, F, P, S, U, R>;
     addSyncUpFunc<P, S, U, R>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, convertToSvcObjectFunc: (item: E) => S): SyncUpAlreadyDownBuilder<E, F, P, S, U, R>;
 }
 
@@ -308,7 +287,6 @@ interface SyncUpBuilderWithUrl<E extends F, F> extends SyncUpBuilder<E, F> {
 }
 
 interface SyncUpAlreadyDownBuilder<E extends F, F, P, S, U, R> {
-    addSyncDownSettings(syncDown: SyncDownSettings<E, F, P, S, R>): BuilderEnd<E, F, P, S, U, R>;
     addSyncDownFunc(syncDownFunc: (params: P) => PsPromise<S[], R>, convertToLocalObjectFunc: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
     build(): SyncSettingsWithUp<E, F, P, S, U, R>;
 }
@@ -318,7 +296,6 @@ interface SyncUpAlreadyDownBuilderWithUrl<E extends F, F, P, S, U, R> extends Sy
 }
 
 interface SyncDownAlreadyUpBuilder<E extends F, F, P, S, R> {
-    addSyncUpSettings<U>(syncUp: SyncUpSettings<E, F, P, S, U, R>): BuilderEnd<E, F, P, S, U, R>;
     addSyncUpFunc<U>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, convertToSvcObjectFunc: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
     build(): SyncSettingsWithDown<E, F, P, S, R>;
 }

@@ -33,14 +33,6 @@ var SyncSettingsBuilder = (function () {
         this.copyObjectFunc = copyObjectFunc;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSettingsInst = function (settings) {
-        this.localCollection = settings.localCollection;
-        this.primaryKeys = settings.primaryKeys;
-        this.hasPrimaryKeyCheckers = settings.hasPrimaryKeyCheckers;
-        this.findFilterFunc = settings.findFilterFunc;
-        this.copyObjectFunc = settings.copyObjectFunc;
-        return this;
-    };
     SyncSettingsBuilder.prototype.addSyncDownUrl = function (syncDownUrl, convertToLocalObjectFunc) {
         this.syncDownFunc = this.convertUrlToSyncDownFunc(syncDownUrl);
         this.convertToLocalObjectFunc = convertToLocalObjectFunc;
@@ -49,11 +41,6 @@ var SyncSettingsBuilder = (function () {
     SyncSettingsBuilder.prototype.addSyncDownFunc = function (syncDownFunc, convertToLocalObjectFunc) {
         this.syncDownFunc = syncDownFunc;
         this.convertToLocalObjectFunc = convertToLocalObjectFunc;
-        return this;
-    };
-    SyncSettingsBuilder.prototype.addSyncDownSettings = function (syncDown) {
-        this.syncDownFunc = syncDown.syncDownFunc;
-        this.convertToLocalObjectFunc = syncDown.convertToLocalObjectFunc;
         return this;
     };
     SyncSettingsBuilder.prototype.addSyncUpUrl = function (syncUpUrl, convertToSvcObjectFunc) {
@@ -66,24 +53,19 @@ var SyncSettingsBuilder = (function () {
         this.convertToSvcObjectFunc = convertToSvcObjectFunc;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSyncUpSettings = function (syncUp) {
-        this.syncUpFunc = syncUp.syncUpFunc;
-        this.convertToSvcObjectFunc = syncUp.convertToSvcObjectFunc;
-        return this;
-    };
     SyncSettingsBuilder.prototype.build = function () {
         return this;
     };
     SyncSettingsBuilder.copy = function (src, deepCopy) {
         if (deepCopy === void 0) { deepCopy = true; }
         if (deepCopy) {
-            return new SyncSettingsBuilder().addSettingsInst(SyncSettingsBuilder.SyncSettingsImpl.copy(src))
-                .addSyncDownSettings(SyncSettingsBuilder.SyncDownSettingsImpl.copy(src))
-                .addSyncUpSettings(SyncSettingsBuilder.SyncUpSettingsImpl.copy(src));
+            return new SyncSettingsBuilder().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
+                .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
+                .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
         }
-        return new SyncSettingsBuilder().addSettingsInst(src)
-            .addSyncDownSettings(src)
-            .addSyncUpSettings(src);
+        return new SyncSettingsBuilder().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
+            .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
+            .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
     };
     SyncSettingsBuilder.fromSettingsConvert = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
         var inst = new SyncSettingsBuilder();
