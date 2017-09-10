@@ -6,7 +6,7 @@
     "module": "commonjs",
     "noEmitOnError": true,
     "noImplicitAny": false,
-    "noImplicitThis": false,
+    "noImplicitThis": true,
     "removeComments": false,
     "sourceMap": false,
     "target": "es5"

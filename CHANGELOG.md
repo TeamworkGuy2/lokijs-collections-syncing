@@ -4,7 +4,14 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.4.1](N/A) - 2017-08-05
+### [0.4.2](N/A) - 2017-09-10
+#### Changed
+* tsconfig.json "noImplicitThis: true"
+* Added README example
+
+
+--------
+### [0.4.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/5822545bf8330b4fc57005e7b060eed2603e12e3) - 2017-08-05
 #### Changed
 * Update to TypeScript 2.4
 
