@@ -187,7 +187,7 @@ class SyncDataCollection {
         return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
             var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
 
-            var toSvcObj = syncSetting.convertToSvcObjectFunc;
+            var toSvcObj = syncSetting.toSvcObject;
             var data = null;
             if (primaryKey) {
                 data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKeyChecker, toSvcObj);
@@ -325,7 +325,7 @@ class SyncDataCollection {
         return function addUpdateOrRemoveItemsFunc(items: S[]) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;
-            var convertToLocalObjectFunc = syncSettings.convertToLocalObjectFunc;
+            var convertToLocalObjectFunc = syncSettings.toLocalObject;
 
             if (syncDownOp.removeAll) {
                 table.clearCollection();

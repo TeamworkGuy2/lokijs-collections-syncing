@@ -4,7 +4,15 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.4.2](N/A) - 2017-09-10
+### [0.5.0](N/A) - 2017-11-06
+#### Changed
+* Added tsconfig.json "strictNullChecks: true" and updated code to handle nulls
+* Update dependency `lokijs-collections@0.22.0` (major refactor and 'strictNullChecks')
+  * Renamed `convertToLocalObjectFunc` -> `toLocalObject` and `convertToSvcObjectFunc` -> `toSvcObject`
+
+
+--------
+### [0.4.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/305628af1eafdcffa0bb3181a19bfdaa9a90ccb4) - 2017-09-10
 #### Changed
 * tsconfig.json "noImplicitThis: true"
 * Added README example

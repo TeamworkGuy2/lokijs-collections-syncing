@@ -24,7 +24,7 @@ var collSync = SyncSettingsBuilder.fromDataCollectionAndSyncFuncs(
 ```
 
 
-Example 1: Configure and run a syncing:
+### Example 1: Configure and run a syncing:
 ```ts
 // set of configuration flags for sync down actions, can be reused
 var syncDownOp = SyncDataCollection.createSyncDownOp(
@@ -54,7 +54,9 @@ syncer.syncDownCollection({ /* sync down parameters */ }, collSync.localCollecti
 ```
 
 
-Example 2: (low-level) Call sync functions manually, handle the results yourself:
+### Example 2: (low-level)
+Call sync functions manually, handle the results yourself:
+
 ```ts
 collSync.syncUpFunc({ /* sync up parameters */ }, /* data, could be collection.data() */).then(function (results) {
 	/* ... */

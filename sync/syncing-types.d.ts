@@ -1,4 +1,4 @@
-﻿/// <reference path="../../lokijs-collections/db-collections/in-mem-collections.d.ts" />
+﻿/// <reference path="../../lokijs-collections/db-collections/mem-db.d.ts" />
 
 /** Interfaces for syncing data collections to and from a server
  * @author TeamworkGuy2
@@ -38,7 +38,7 @@ declare interface SyncSettings<E extends F, F, S, R> {
  */
 declare interface SyncUpSettings<E extends F, F, P, S, U, R> {
     syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>;
-    convertToSvcObjectFunc: (item: E) => S;
+    toSvcObject: (item: E) => S;
 }
 
 
@@ -51,7 +51,7 @@ declare interface SyncUpSettings<E extends F, F, P, S, U, R> {
  */
 declare interface SyncDownSettings<E extends F, F, P, S, R> {
     syncDownFunc: (params: P) => PsPromise<S[], R>;
-    convertToLocalObjectFunc: (item: S) => E;
+    toLocalObject: (item: S) => E;
 }
 
 

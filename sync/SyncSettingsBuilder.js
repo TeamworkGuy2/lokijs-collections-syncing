@@ -35,22 +35,22 @@ var SyncSettingsBuilder = (function () {
     };
     SyncSettingsBuilder.prototype.addSyncDownUrl = function (syncDownUrl, convertToLocalObjectFunc) {
         this.syncDownFunc = this.convertUrlToSyncDownFunc(syncDownUrl);
-        this.convertToLocalObjectFunc = convertToLocalObjectFunc;
+        this.toLocalObject = convertToLocalObjectFunc;
         return this;
     };
     SyncSettingsBuilder.prototype.addSyncDownFunc = function (syncDownFunc, convertToLocalObjectFunc) {
         this.syncDownFunc = syncDownFunc;
-        this.convertToLocalObjectFunc = convertToLocalObjectFunc;
+        this.toLocalObject = convertToLocalObjectFunc;
         return this;
     };
     SyncSettingsBuilder.prototype.addSyncUpUrl = function (syncUpUrl, convertToSvcObjectFunc) {
         this.syncUpFunc = this.convertUrlToSyncUpFunc(syncUpUrl);
-        this.convertToSvcObjectFunc = convertToSvcObjectFunc;
+        this.toSvcObject = convertToSvcObjectFunc;
         return this;
     };
     SyncSettingsBuilder.prototype.addSyncUpFunc = function (syncUpFunc, convertToSvcObjectFunc) {
         this.syncUpFunc = syncUpFunc;
-        this.convertToSvcObjectFunc = convertToSvcObjectFunc;
+        this.toSvcObject = convertToSvcObjectFunc;
         return this;
     };
     SyncSettingsBuilder.prototype.build = function () {
@@ -60,12 +60,12 @@ var SyncSettingsBuilder = (function () {
         if (deepCopy === void 0) { deepCopy = true; }
         if (deepCopy) {
             return new SyncSettingsBuilder().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
-                .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
-                .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
+                .addSyncDownFunc(src.syncDownFunc, src.toLocalObject)
+                .addSyncUpFunc(src.syncUpFunc, src.toSvcObject);
         }
         return new SyncSettingsBuilder().addSettings(src.localCollection, src.primaryKeys, src.hasPrimaryKeyCheckers, src.findFilterFunc, src.copyObjectFunc)
-            .addSyncDownFunc(src.syncDownFunc, src.convertToLocalObjectFunc)
-            .addSyncUpFunc(src.syncUpFunc, src.convertToSvcObjectFunc);
+            .addSyncDownFunc(src.syncDownFunc, src.toLocalObject)
+            .addSyncUpFunc(src.syncUpFunc, src.toSvcObject);
     };
     SyncSettingsBuilder.fromSettingsConvert = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
         var inst = new SyncSettingsBuilder();
@@ -107,10 +107,10 @@ var SyncSettingsBuilder = (function () {
         inst.copyObjectFunc = tableFuncs.copyFunc;
         // sync down
         inst.syncDownFunc = syncDownFunc;
-        inst.convertToLocalObjectFunc = tableFuncs.convertToLocalObjectFunc;
+        inst.toLocalObject = tableFuncs.toLocalObject;
         // sync up
         inst.syncUpFunc = syncUpFunc;
-        inst.convertToSvcObjectFunc = tableFuncs.convertToSvcObjectFunc;
+        inst.toSvcObject = tableFuncs.toSvcObject;
         return {
             addFilterFuncs: function (findFilterFunc) {
                 inst.findFilterFunc = findFilterFunc;
@@ -145,10 +145,10 @@ var SyncSettingsBuilder = (function () {
     var SyncUpSettingsImpl = (function () {
         function SyncUpSettingsImpl(syncUpFunc, toSvcObj) {
             this.syncUpFunc = syncUpFunc;
-            this.convertToSvcObjectFunc = toSvcObj;
+            this.toSvcObject = toSvcObj;
         }
         SyncUpSettingsImpl.copy = function (src) {
-            return new SyncUpSettingsImpl(src.syncUpFunc, src.convertToSvcObjectFunc);
+            return new SyncUpSettingsImpl(src.syncUpFunc, src.toSvcObject);
         };
         return SyncUpSettingsImpl;
     }());
@@ -158,10 +158,10 @@ var SyncSettingsBuilder = (function () {
     var SyncDownSettingsImpl = (function () {
         function SyncDownSettingsImpl(syncDownFunc, toLocalObj) {
             this.syncDownFunc = syncDownFunc;
-            this.convertToLocalObjectFunc = toLocalObj;
+            this.toLocalObject = toLocalObj;
         }
         SyncDownSettingsImpl.copy = function (src) {
-            return new SyncDownSettingsImpl(src.syncDownFunc, src.convertToLocalObjectFunc);
+            return new SyncDownSettingsImpl(src.syncDownFunc, src.toLocalObject);
         };
         return SyncDownSettingsImpl;
     }());
