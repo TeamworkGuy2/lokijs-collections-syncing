@@ -58,7 +58,7 @@ syncer.syncDownCollection({ /* sync down parameters */ }, collSync.localCollecti
 Call sync functions manually, handle the results yourself:
 
 ```ts
-collSync.syncUpFunc({ /* sync up parameters */ }, /* data, could be collection.data() */).then(function (results) {
+collSync.syncUpFunc({ /* sync up parameters */ }, /* data array such as collection.data() */).then(function (results) {
 	/* ... */
 }, function (err) {
 	/* ... */

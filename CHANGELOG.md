@@ -4,9 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.5.0](N/A) - 2017-11-06
+### [0.5.1](N/A) - 2017-11-16
 #### Changed
-* Added tsconfig.json "strictNullChecks: true" and updated code to handle nulls
+* `tsconfig.json` set `strictNullChecks` to `true` (incorrect in previous commit). Updated some dependency versions.
+* Renamed some parameters and local variables
+
+
+--------
+### [0.5.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/2aea2c6d425e925817f22dd8d2535978272800ea) - 2017-11-06
+#### Changed
+* `tsconfig.json` added `strictNullChecks` and updated code to handle nulls
 * Update dependency `lokijs-collections@0.22.0` (major refactor and 'strictNullChecks')
   * Renamed `convertToLocalObjectFunc` -> `toLocalObject` and `convertToSvcObjectFunc` -> `toSvcObject`
 
@@ -14,7 +21,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 --------
 ### [0.4.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/305628af1eafdcffa0bb3181a19bfdaa9a90ccb4) - 2017-09-10
 #### Changed
-* tsconfig.json "noImplicitThis: true"
+* `tsconfig.json` added `noImplicitThis: true`
 * Added README example
 
 

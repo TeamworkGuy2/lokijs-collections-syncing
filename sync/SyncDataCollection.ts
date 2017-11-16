@@ -4,7 +4,7 @@ import Defer = require("../../ts-promises/Defer");
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
  *  - Sync a remote data collection to a local data collection (refered to as 'syncing down').
- * The local and remote collections can have different data models (automatic conversion occurs using SyncSettingsWithUp.convertToSvcObjectFunc and SyncSettingsWithDown.convertToLocalObjectFunc).
+ * The local and remote collections can have different data models (automatic conversion occurs using SyncSettingsWithUp.toSvcObject and SyncSettingsWithDown.toLocalObject).
  *
  * 'Syncing up' queries the local collection and send items with a 'isSynchedPropName' value of false to the remote collection.
  * 'Syncing down' retrieves items from the remote collection based on the 'params' parameter passed to the syncing down function and
@@ -30,11 +30,11 @@ class SyncDataCollection {
     /** Set the last synched timestamp of a particular table */
     private updateLastSyncDownTimestamp: (table: DataCollection<any, any>) => void;
     /** An optional action start function */
-    private notifyActionStart: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>) => any;
+    private notifyActionStart: ((action: SyncDataCollection.SyncAction, table: DataCollection<any, any>) => any) | undefined;
     /** An optional action end function */
-    private notifyActionEnd: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any) => void;
+    private notifyActionEnd: ((action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any) => void) | undefined;
     /** An optional action failed function */
-    private notifyActionFailure: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any, err: any) => void;
+    private notifyActionFailure: ((action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any, err: any) => void) | undefined;
 
 
     /** Create an object which can sync a data collection to/from a remote data destination/source
@@ -130,7 +130,7 @@ class SyncDataCollection {
                 syncFailure(err);
                 return;
             }
-            dfd.resolve(null);
+            dfd.resolve(<undefined><any>null);
         }
 
         try {
@@ -176,19 +176,19 @@ class SyncDataCollection {
      * only contains one record and send that one record as an object, rather than sending an
      * array of objects to the service call, false or undefined sends an array of any data in the collection
      */
-    public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U, SyncError> {
+    public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U | null, SyncError> {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
-        var primaryKey = Arrays.getIfOneItem(primaryKeys);
+        var primaryKey = <keyof E>Arrays.getIfOneItem(primaryKeys);
         var primaryKeyCheckers = syncSetting.hasPrimaryKeyCheckers;
-        var primaryKeyChecker = Arrays.getIfOneItem(primaryKeyCheckers);
+        var primaryKeyChecker = <(obj: E) => boolean>Arrays.getIfOneItem(primaryKeyCheckers);
         var localColl = syncSetting.localCollection;
 
         return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
             var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
 
             var toSvcObj = syncSetting.toSvcObject;
-            var data = null;
+            var data: S[] = <never>null;
             if (primaryKey) {
                 data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKeyChecker, toSvcObj);
             }
@@ -235,9 +235,9 @@ class SyncDataCollection {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
-    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R, S> {
+    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S> {
         var self = this;
-        var dfd = Defer.newDefer<R, S>();
+        var dfd = Defer.newDefer<R | null, S>();
 
         var synchedProp = <F>{};
         synchedProp[this.isSynchedPropName] = false;
@@ -325,7 +325,7 @@ class SyncDataCollection {
         return function addUpdateOrRemoveItemsFunc(items: S[]) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;
-            var convertToLocalObjectFunc = syncSettings.toLocalObject;
+            var toLocalObject = syncSettings.toLocalObject;
 
             if (syncDownOp.removeAll) {
                 table.clearCollection();
@@ -345,7 +345,7 @@ class SyncDataCollection {
                             }
                         }
                         else {
-                            var convertedItem = convertToLocalObjectFunc(item);
+                            var convertedItem = toLocalObject(item);
                             var query = findFilterFunc(item);
                             table.addOrUpdateWhereNoModify(query, convertedItem);
                         }
@@ -364,7 +364,7 @@ class SyncDataCollection {
                             }
                         }
                         else {
-                            var convertedItem = convertToLocalObjectFunc(item);
+                            var convertedItem = toLocalObject(item);
                             res.push(convertedItem);
                         }
                     }

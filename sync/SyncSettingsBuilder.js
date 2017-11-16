@@ -33,24 +33,24 @@ var SyncSettingsBuilder = (function () {
         this.copyObjectFunc = copyObjectFunc;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSyncDownUrl = function (syncDownUrl, convertToLocalObjectFunc) {
+    SyncSettingsBuilder.prototype.addSyncDownUrl = function (syncDownUrl, toLocalObject) {
         this.syncDownFunc = this.convertUrlToSyncDownFunc(syncDownUrl);
-        this.toLocalObject = convertToLocalObjectFunc;
+        this.toLocalObject = toLocalObject;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSyncDownFunc = function (syncDownFunc, convertToLocalObjectFunc) {
+    SyncSettingsBuilder.prototype.addSyncDownFunc = function (syncDownFunc, toLocalObject) {
         this.syncDownFunc = syncDownFunc;
-        this.toLocalObject = convertToLocalObjectFunc;
+        this.toLocalObject = toLocalObject;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSyncUpUrl = function (syncUpUrl, convertToSvcObjectFunc) {
+    SyncSettingsBuilder.prototype.addSyncUpUrl = function (syncUpUrl, toSvcObject) {
         this.syncUpFunc = this.convertUrlToSyncUpFunc(syncUpUrl);
-        this.toSvcObject = convertToSvcObjectFunc;
+        this.toSvcObject = toSvcObject;
         return this;
     };
-    SyncSettingsBuilder.prototype.addSyncUpFunc = function (syncUpFunc, convertToSvcObjectFunc) {
+    SyncSettingsBuilder.prototype.addSyncUpFunc = function (syncUpFunc, toSvcObject) {
         this.syncUpFunc = syncUpFunc;
-        this.toSvcObject = convertToSvcObjectFunc;
+        this.toSvcObject = toSvcObject;
         return this;
     };
     SyncSettingsBuilder.prototype.build = function () {

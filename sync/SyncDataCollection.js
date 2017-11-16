@@ -4,7 +4,7 @@ var Defer = require("../../ts-promises/Defer");
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
  *  - Sync a remote data collection to a local data collection (refered to as 'syncing down').
- * The local and remote collections can have different data models (automatic conversion occurs using SyncSettingsWithUp.convertToSvcObjectFunc and SyncSettingsWithDown.convertToLocalObjectFunc).
+ * The local and remote collections can have different data models (automatic conversion occurs using SyncSettingsWithUp.toSvcObject and SyncSettingsWithDown.toLocalObject).
  *
  * 'Syncing up' queries the local collection and send items with a 'isSynchedPropName' value of false to the remote collection.
  * 'Syncing down' retrieves items from the remote collection based on the 'params' parameter passed to the syncing down function and
@@ -261,7 +261,7 @@ var SyncDataCollection = (function () {
         return function addUpdateOrRemoveItemsFunc(items) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;
-            var convertToLocalObjectFunc = syncSettings.toLocalObject;
+            var toLocalObject = syncSettings.toLocalObject;
             if (syncDownOp.removeAll) {
                 table.clearCollection();
             }
@@ -278,7 +278,7 @@ var SyncDataCollection = (function () {
                             }
                         }
                         else {
-                            var convertedItem = convertToLocalObjectFunc(item);
+                            var convertedItem = toLocalObject(item);
                             var query = findFilterFunc(item);
                             table.addOrUpdateWhereNoModify(query, convertedItem);
                         }
@@ -295,7 +295,7 @@ var SyncDataCollection = (function () {
                             }
                         }
                         else {
-                            var convertedItem = convertToLocalObjectFunc(item);
+                            var convertedItem = toLocalObject(item);
                             res.push(convertedItem);
                         }
                     }
