@@ -22,7 +22,7 @@ var Arrays = require("../../ts-mortar/utils/Arrays");
  * @author TeamworkGuy2
  * @since 2016-3-7
  */
-var SyncSettingsBuilder = (function () {
+var SyncSettingsBuilder = /** @class */ (function () {
     function SyncSettingsBuilder() {
     }
     SyncSettingsBuilder.prototype.addSettings = function (localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObjectFunc) {
@@ -124,7 +124,7 @@ var SyncSettingsBuilder = (function () {
     /** SyncSettings class
      * Settings for syncing server data to and from a local data collection
      */
-    var SyncSettingsImpl = (function () {
+    var SyncSettingsImpl = /** @class */ (function () {
         function SyncSettingsImpl(localCollection, primaryKeys, hasPrimaryKeyCheckers, findFilterFunc, copyObj, convertUrlToSyncDownFunc, convertUrlToSyncUpFunc) {
             this.localCollection = localCollection;
             this.primaryKeys = Arrays.asArray(primaryKeys);
@@ -142,7 +142,7 @@ var SyncSettingsBuilder = (function () {
     SyncSettingsBuilder.SyncSettingsImpl = SyncSettingsImpl;
     /** Settings for syncing up (uploading) server data from a local data collection
      */
-    var SyncUpSettingsImpl = (function () {
+    var SyncUpSettingsImpl = /** @class */ (function () {
         function SyncUpSettingsImpl(syncUpFunc, toSvcObj) {
             this.syncUpFunc = syncUpFunc;
             this.toSvcObject = toSvcObj;
@@ -155,7 +155,7 @@ var SyncSettingsBuilder = (function () {
     SyncSettingsBuilder.SyncUpSettingsImpl = SyncUpSettingsImpl;
     /** Settings for syncing down (downloading) server data to a local data collection
      */
-    var SyncDownSettingsImpl = (function () {
+    var SyncDownSettingsImpl = /** @class */ (function () {
         function SyncDownSettingsImpl(syncDownFunc, toLocalObj) {
             this.syncDownFunc = syncDownFunc;
             this.toLocalObject = toLocalObj;

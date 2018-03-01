@@ -18,7 +18,7 @@ var Defer = require("../../ts-promises/Defer");
  * For a full list of actions, see the SyncDataCollection.SyncDownOp enum
  * @since 2016-1-29
  */
-var SyncDataCollection = (function () {
+var SyncDataCollection = /** @class */ (function () {
     /** Create an object which can sync a data collection to/from a remote data destination/source
      * @param getLastSyncDownTimestamp a function to get a collection's last sync down timestamp (unix style millisecond number)
      * @param updateLastSyncDownTimestamp a function to update a collection's last sync down timestamp
@@ -358,7 +358,7 @@ var SyncDataCollection = (function () {
      *  - REMOVE_DELETED_AND_ADD_NEW
      *  - REMOVE_NONE_AND_ADD_NEW
      */
-    var SyncDownOp = (function () {
+    var SyncDownOp = /** @class */ (function () {
         function SyncDownOp(removeAll, removeDeleted, merge) {
             this.removeAll = removeAll;
             this.removeDeleted = removeDeleted;

@@ -2,19 +2,21 @@
   "name": "lokijs-collections-syncing",
   "version": "0.5.1",
   "description": "lokijs-collections syncing to and from a remote data source",
+  "homepage": "https://github.com/TeamworkGuy2/lokijs-collections-syncing",
   "dependencies": {
     "lokijs-collections": "~0.22.0",
     "ts-mortar": "~0.15.0",
     "ts-promises": "~0.3.0"
   },
   "devDependencies": {
-    "@types/chai": "~4.0.0",
-    "@types/mocha": "~2.2.0",
+    "@types/chai": "~4.1.0",
+    "@types/mocha": "~2.2.48",
     "chai": "~4.1.0",
-    "mocha": "~4.0.0",
-    "typescript": "~2.4.0"
+    "mocha": "~5.0.0",
+    "typescript": "~2.7.0"
   },
   "scripts": {
-    "test": "mocha -u tdd"
+    "test": "mocha -u tdd --recursive",
+    "tsc": "./node_modules/typescript/bin/tsc"
   }
 }

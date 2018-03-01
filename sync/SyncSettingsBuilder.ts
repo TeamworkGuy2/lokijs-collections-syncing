@@ -154,7 +154,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
         // sync settings
         inst.localCollection = table;
         inst.primaryKeys = tableModel.primaryKeys;
-        inst.hasPrimaryKeyCheckers = tableModel.primaryKeys.map(k => (itm) => !!itm[k]);
+        inst.hasPrimaryKeyCheckers = tableModel.primaryKeys.map(k => (itm: E) => !!itm[k]);
         inst.copyObjectFunc = tableFuncs.copyFunc;
         // sync down
         inst.syncDownFunc = syncDownFunc;

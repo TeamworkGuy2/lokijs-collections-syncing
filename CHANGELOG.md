@@ -4,7 +4,15 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.5.1](N/A) - 2017-11-16
+### [0.5.2](N/A) - 2018-02-28
+#### Changed
+* Update to TypeScript 2.7
+* Update dependencies: mocha, @types/chai, @types/mocha, @types/node
+* Enable tsconfig.json `noImplicitAny`
+
+
+--------
+### [0.5.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/b09fba823a4295cd1beab93aa22931e71afdcd0e) - 2017-11-16
 #### Changed
 * `tsconfig.json` set `strictNullChecks` to `true` (incorrect in previous commit). Updated some dependency versions.
 * Renamed some parameters and local variables

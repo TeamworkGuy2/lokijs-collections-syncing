@@ -136,7 +136,7 @@ class SyncDataCollection {
         try {
             var syncDownTimer = this.notifyActionStart ? this.notifyActionStart("syncDown", table) : null;
             var isAfterSync = false;
-            var afterSyncDownUpdateTimer = null;
+            var afterSyncDownUpdateTimer: any = null;
 
             syncDownFunc(params).done(function (items) {
                 try {
@@ -240,7 +240,7 @@ class SyncDataCollection {
         var dfd = Defer.newDefer<R | null, S>();
 
         var synchedProp = <F>{};
-        synchedProp[this.isSynchedPropName] = false;
+        (<any>synchedProp)[this.isSynchedPropName] = false;
 
         var items = table.data(synchedProp);
         // if no items require syncing, resolve and return immediately
@@ -273,12 +273,12 @@ class SyncDataCollection {
 
     /** Search for items in a table using multiple primary keys and 'isSynchedPropName' and use updateWhere(...) to update matching items
      */
-    private updateMultiPrimaryKeyItems(table: DataCollection<any, any>, items: any[], primaryKeys: string[]) {
+    private updateMultiPrimaryKeyItems<E>(table: DataCollection<E, any>, items: E[], primaryKeys: (keyof E)[]) {
         // set each item's synched flag to true once the items have been synched with the server
-        var synchedProp = {};
+        var synchedProp = <any>{};
         synchedProp[this.isSynchedPropName] = true;
 
-        var whereFilter = {};
+        var whereFilter = <any>{};
         whereFilter[this.isSynchedPropName] = false;
 
         for (var k = 0, keyCount = primaryKeys.length; k < keyCount; k++) {
@@ -298,12 +298,12 @@ class SyncDataCollection {
 
     /** Search for items in a table using a single primary key and 'isSynchedPropName' and use updateWhere(...) to update matching items
      */
-    private updateSinglePrimaryKeyItems(table: DataCollection<any, any>, items: any[], primaryKey: string) {
+    private updateSinglePrimaryKeyItems<E>(table: DataCollection<E, any>, items: E[], primaryKey: keyof E) {
         // set each item's synched flag to true once the items have been synched with the server
-        var synchedProp = {};
+        var synchedProp = <any>{};
         synchedProp[this.isSynchedPropName] = true;
 
-        var whereFilter = {};
+        var whereFilter = <any>{};
         whereFilter[this.isSynchedPropName] = false;
         whereFilter[primaryKey] = null;
 
@@ -321,7 +321,7 @@ class SyncDataCollection {
      * @param isDeletedPropName the name of the property which indicates if an item should be deleted, if value of this property is truthy the item is deleted when the syncing, nullable
      * @param syncDownOp the type of merge/update/add operation to perform with the new items
      */
-    public static createAddUpdateOrRemoveItemsFunc<E extends F, F, P, S, R>(syncSettings: SyncSettingsWithDown<E, F, P, S, R>, isDeletedPropName: string, syncDownOp: SyncDataCollection.SyncDownOp) {
+    public static createAddUpdateOrRemoveItemsFunc<E extends F, F, P, S, R>(syncSettings: SyncSettingsWithDown<E, F, P, S, R>, isDeletedPropName: keyof S, syncDownOp: SyncDataCollection.SyncDownOp) {
         return function addUpdateOrRemoveItemsFunc(items: S[]) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;
