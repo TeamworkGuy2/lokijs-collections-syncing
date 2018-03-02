@@ -4,7 +4,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.5.2](N/A) - 2018-02-28
+### [0.5.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/21dd1efa2bf7e63da061bf3782f0f4da7735292d) - 2018-02-28
 #### Changed
 * Update to TypeScript 2.7
 * Update dependencies: mocha, @types/chai, @types/mocha, @types/node
