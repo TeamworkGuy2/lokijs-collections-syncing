@@ -1,5 +1,5 @@
 "use strict";
-var Arrays = require("../../ts-mortar/utils/Arrays");
+var Arrays = require("ts-mortar/utils/Arrays");
 /** Builder for SyncSettings, SyncUpSettings, and SyncDownSettings instances.
  * Both SyncUpSettings and SyncDownSettings require a base SyncSettings instance to build on top of.
  * SyncUpSettings and SyncDownSettings can be combined, but only one is required.

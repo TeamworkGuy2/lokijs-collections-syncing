@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.5.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/21dd1efa2bf7e63da061bf3782f0f4da7735292d) - 2018-02-28
+### [0.6.0](N/A) - 2018-04-14
+#### Changed
+* Update to TypeScript 2.8
+* Setup dependencies as proper npm node_modules
+* Update tsconfig.json with `noImplicitReturns: true` and `forceConsistentCasingInFileNames: true`
+* Added release tarball and npm script `build-package` to package.json referencing external process to generate tarball
+
+
+--------
+### [0.5.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/4790feb1cf7d7c8df4c1fe9c84731dfc9d7d8bb3) - 2018-02-28
 #### Changed
 * Update to TypeScript 2.7
 * Update dependencies: mocha, @types/chai, @types/mocha, @types/node

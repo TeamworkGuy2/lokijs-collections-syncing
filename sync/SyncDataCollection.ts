@@ -1,5 +1,5 @@
-﻿import Arrays = require("../../ts-mortar/utils/Arrays");
-import Defer = require("../../ts-promises/Defer");
+﻿import Arrays = require("ts-mortar/utils/Arrays");
+import Defer = require("ts-promises/Defer");
 
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
@@ -184,7 +184,7 @@ class SyncDataCollection {
         var primaryKeyChecker = <(obj: E) => boolean>Arrays.getIfOneItem(primaryKeyCheckers);
         var localColl = syncSetting.localCollection;
 
-        return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
+        function convertAndSendItemsToServer(items: E[]): PsPromise<U, SyncError> {
             var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
 
             var toSvcObj = syncSetting.toSvcObject;
@@ -201,13 +201,12 @@ class SyncDataCollection {
             }
             var syncUpTimer = self.notifyActionStart ? self.notifyActionStart("syncUp", localColl) : null;
 
-            return syncSetting.syncUpFunc(params, data).then(function (res) {
+            return <PsPromise<U, SyncError>>syncSetting.syncUpFunc(params, data).then(function (res) {
                 if (self.notifyActionEnd) {
                     self.notifyActionEnd("syncUp", localColl, syncUpTimer);
                 }
-
                 return res;
-            }, function (err): Throws<SyncError> {
+            }).catch(function (err): Throws<SyncError> {
                 if (self.notifyActionFailure) {
                     self.notifyActionFailure("syncUp", localColl, syncUpTimer, err);
                 }
@@ -218,7 +217,9 @@ class SyncDataCollection {
                     error: err
                 };
             });
-        });
+        }
+
+        return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, convertAndSendItemsToServer);
     }
 
 

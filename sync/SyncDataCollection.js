@@ -1,6 +1,6 @@
 "use strict";
-var Arrays = require("../../ts-mortar/utils/Arrays");
-var Defer = require("../../ts-promises/Defer");
+var Arrays = require("ts-mortar/utils/Arrays");
+var Defer = require("ts-promises/Defer");
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
  *  - Sync a remote data collection to a local data collection (refered to as 'syncing down').
@@ -146,7 +146,7 @@ var SyncDataCollection = /** @class */ (function () {
         var primaryKeyCheckers = syncSetting.hasPrimaryKeyCheckers;
         var primaryKeyChecker = Arrays.getIfOneItem(primaryKeyCheckers);
         var localColl = syncSetting.localCollection;
-        return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, function convertAndSendItemsToServer(items) {
+        function convertAndSendItemsToServer(items) {
             var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
             var toSvcObj = syncSetting.toSvcObject;
             var data = null;
@@ -165,7 +165,7 @@ var SyncDataCollection = /** @class */ (function () {
                     self.notifyActionEnd("syncUp", localColl, syncUpTimer);
                 }
                 return res;
-            }, function (err) {
+            }).catch(function (err) {
                 if (self.notifyActionFailure) {
                     self.notifyActionFailure("syncUp", localColl, syncUpTimer, err);
                 }
@@ -175,7 +175,8 @@ var SyncDataCollection = /** @class */ (function () {
                     error: err
                 };
             });
-        });
+        }
+        return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, convertAndSendItemsToServer);
     };
     /** A wrapper around a 'syncAction' function that syncs data to a destination.
      * This function loads the items from storage for 'syncAction' and is called back if the data transfer is successful or not.
@@ -284,6 +285,7 @@ var SyncDataCollection = /** @class */ (function () {
                         }
                     }
                 }
+                // use DataCollection.addAll(...) regardless of existing data
                 else {
                     var res = [];
                     for (var i = 0, size = items.length; i < size; i++) {

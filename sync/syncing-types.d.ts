@@ -1,4 +1,5 @@
-﻿/// <reference path="../../lokijs-collections/db-collections/mem-db.d.ts" />
+﻿/// <reference path="../../ts-promises/ts-promises.d.ts" />
+/// <reference path="../../lokijs-collections/db-collections/mem-db.d.ts" />
 
 /** Interfaces for syncing data collections to and from a server
  * @author TeamworkGuy2
