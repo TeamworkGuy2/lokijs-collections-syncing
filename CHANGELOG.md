@@ -4,7 +4,17 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.6.0](N/A) - 2018-04-14
+### [0.7.0](N/A) - 2018-10-17
+#### Changed
+* Update to TypeScript 3.1
+* Update dev dependencies and @types
+* Enable `tsconfig.json` `strict` and fix compile errors
+* Removed compiled bin tarball in favor of git tags
+* Update `primaryKeys` parameters in SyncSettingsBuilder functions from `(keyof T) | (keyof T)[]` to `(keyof T & string)[]` to simplify and compile without error
+
+
+--------
+### [0.6.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/bc9dec000cb93104d2ba6f173e462b2db1a36eac) - 2018-04-14
 #### Changed
 * Update to TypeScript 2.8
 * Setup dependencies as proper npm node_modules

@@ -20,7 +20,7 @@ declare interface SyncError {
  */
 declare interface SyncSettings<E extends F, F, S, R> {
     localCollection: DataCollection<E, F>;
-    primaryKeys: (keyof E)[];
+    primaryKeys: (keyof E & string)[];
     hasPrimaryKeyCheckers: ((obj: E) => boolean)[];
     findFilterFunc: (item: S) => F;
     copyObjectFunc: (item: E) => E;

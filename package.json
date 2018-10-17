@@ -1,6 +1,6 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "lokijs-collections syncing to and from a remote data source",
   "author": "TeamworkGuy2",
   "homepage": "https://github.com/TeamworkGuy2/lokijs-collections-syncing",
@@ -10,20 +10,19 @@
     "url": "https://github.com/TeamworkGuy2/lokijs-collections-syncing.git"
   },
   "dependencies": {
-    "@types/q": "~1.5.0",
-    "lokijs-collections": "https://github.com/TeamworkGuy2/lokijs-collections/blob/master/bin/lokijs-collections-0.23.0.tgz?raw=true",
-    "ts-mortar": "https://github.com/TeamworkGuy2/ts-mortar/blob/master/bin/ts-mortar-0.15.7.tgz?raw=true",
-    "ts-promises": "https://github.com/TeamworkGuy2/ts-promises/blob/master/bin/ts-promises-0.4.2.tgz?raw=true"
+    "@types/q": "~1.5.1",
+    "lokijs-collections": "https://github.com/TeamworkGuy2/lokijs-collections#v0.24.0",
+    "ts-mortar": "https://github.com/TeamworkGuy2/ts-mortar#v0.15.8",
+    "ts-promises": "https://github.com/TeamworkGuy2/ts-promises#v0.4.3"
   },
   "devDependencies": {
-    "@types/chai": "~4.1.0",
-    "@types/mocha": "~5.0.0",
-    "chai": "~4.1.2",
-    "mocha": "~5.0.5",
-    "typescript": "~2.8.0"
+    "@types/chai": "~4.1.6",
+    "@types/mocha": "~5.2.5",
+    "chai": "~4.2.0",
+    "mocha": "~5.2.0",
+    "typescript": "~3.1.3"
   },
   "scripts": {
-    "build-package": "node ../package-tarball/index.js",
     "test": "mocha -u tdd --recursive",
     "tsc": "tsc"
   }

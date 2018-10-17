@@ -24,31 +24,31 @@
  */
 class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder<E, F> {
     // sync settings
-    localCollection: DataCollection<E, F>;
-    primaryKeys: (keyof E)[];
-    hasPrimaryKeyCheckers: ((obj: E) => boolean)[];
-    findFilterFunc: (item: S) => F;
-    copyObjectFunc: (item: E) => E;
-    convertUrlToSyncDownFunc: (url: string) => (params: any) => PsPromise<S[], R>;
-    convertUrlToSyncUpFunc: (url: string) => (params: P, items: S[]) => PsPromise<U, R>;
+    localCollection!: DataCollection<E, F>;
+    primaryKeys!: (keyof E & string)[];
+    hasPrimaryKeyCheckers!: ((obj: E) => boolean)[];
+    findFilterFunc!: (item: S) => F;
+    copyObjectFunc!: (item: E) => E;
+    convertUrlToSyncDownFunc!: (url: string) => (params: any) => PsPromise<S[], R>;
+    convertUrlToSyncUpFunc!: (url: string) => (params: P, items: S[]) => PsPromise<U, R>;
     // sync down
-    syncDownFunc: (params: P) => PsPromise<S[], R>;
-    toLocalObject: (item: S) => E;
+    syncDownFunc!: (params: P) => PsPromise<S[], R>;
+    toLocalObject!: (item: S) => E;
     // sync up
-    syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>;
-    toSvcObject: (item: E) => S;
+    syncUpFunc!: (params: P, items: S[]) => PsPromise<U, R>;
+    toSvcObject!: (item: E) => S;
 
 
     constructor() {
     }
 
 
-    public addSettings(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public addSettings(localCollection: DataCollection<E, F>, primaryKeys: (keyof E & string)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E) {
 
         this.localCollection = localCollection;
-        this.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
+        this.primaryKeys = primaryKeys;
         this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         this.findFilterFunc = findFilterFunc;
         this.copyObjectFunc = copyObjectFunc;
@@ -101,7 +101,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
     }
 
 
-    public static fromSettingsConvert<E extends F, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public static fromSettingsConvert<E extends F, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E & string)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E,
             convertUrlToSyncDownFunc: (url: string) => (params: any) => PsPromise<any[], R>,
@@ -109,7 +109,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
-        inst.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
+        inst.primaryKeys = primaryKeys;
         inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
@@ -119,13 +119,13 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
     }
 
 
-    public static fromSettings<E extends F, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+    public static fromSettings<E extends F, F, R>(localCollection: DataCollection<E, F>, primaryKeys: (keyof E & string)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
             findFilterFunc: (item: any) => any,
             copyObjectFunc: (item: E) => E): SyncDownBuilder<E, F> & SyncUpBuilder<E, F> {
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
-        inst.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
+        inst.primaryKeys = primaryKeys;
         inst.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
         inst.findFilterFunc = findFilterFunc;
         inst.copyObjectFunc = copyObjectFunc;
@@ -180,7 +180,7 @@ module SyncSettingsBuilder {
      */
     export class SyncSettingsImpl<E extends F, F, S, R> implements SyncSettings<E, F, S, R> {
         localCollection: DataCollection<E, F>;
-        primaryKeys: (keyof E)[];
+        primaryKeys: (keyof E & string)[];
         hasPrimaryKeyCheckers: ((obj: E) => boolean)[];
         findFilterFunc: (item: S) => F;
         copyObjectFunc: (item: E) => E;
@@ -188,14 +188,14 @@ module SyncSettingsBuilder {
         convertUrlToSyncUpFunc: ((url: string) => (params: any, items: any[]) => PsPromise<any, R>) | undefined;
 
 
-        constructor(localCollection: DataCollection<E, F>, primaryKeys: (keyof E) | (keyof E)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+        constructor(localCollection: DataCollection<E, F>, primaryKeys: (keyof E & string)[], hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
                 findFilterFunc: (item: S) => F,
                 copyObj: (item: E) => E,
                 convertUrlToSyncDownFunc?: (url: string) => (params: any) => PsPromise<any[], R>,
                 convertUrlToSyncUpFunc?: (url: string) => (params: any, items: any[]) => PsPromise<any, R>) {
 
             this.localCollection = localCollection;
-            this.primaryKeys = Arrays.asArray<keyof E>(primaryKeys);
+            this.primaryKeys = primaryKeys;
             this.hasPrimaryKeyCheckers = Arrays.asArray(hasPrimaryKeyCheckers);
             this.findFilterFunc = findFilterFunc;
             this.copyObjectFunc = copyObj;
@@ -240,7 +240,7 @@ module SyncSettingsBuilder {
     export class SyncDownSettingsImpl<E extends F, F, P, S, R> implements SyncDownSettings<E, F, P, S, R> {
         syncDownFunc: (params: P) => PsPromise<S[], R>;
         toLocalObject: (item: any) => E;
-        updateLastSyncDate: (table: DataCollection<E, F>) => void;
+        updateLastSyncDate!: (table: DataCollection<E, F>) => void;
 
 
         constructor(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObj: (item: any) => E) {
