@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.0](N/A) - 2018-10-17
+### [0.7.1](N/A) - 2018-10-20
+#### Changed
+* Switch `package.json` github dependencies from tag urls to release tarballs to simplify npm install (doesn't require git to npm install tarballs)
+
+
+--------
+### [0.7.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/89f44cad125b4a4327e737be9226aeb7d20cb4c5) - 2018-10-17
 #### Changed
 * Update to TypeScript 3.1
 * Update dev dependencies and @types
