@@ -1,5 +1,4 @@
-﻿import Arrays = require("ts-mortar/utils/Arrays");
-import Defer = require("ts-promises/Defer");
+﻿import Defer = require("ts-promises/Defer");
 
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
@@ -179,9 +178,9 @@ class SyncDataCollection {
     public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U | null, SyncError> {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
-        var primaryKey = <keyof E>Arrays.getIfOneItem(primaryKeys);
+        var primaryKey = (primaryKeys.length === 1 ? primaryKeys[0] : null);
         var primaryKeyCheckers = syncSetting.hasPrimaryKeyCheckers;
-        var primaryKeyChecker = <(obj: E) => boolean>Arrays.getIfOneItem(primaryKeyCheckers);
+        var primaryKeyChecker = (primaryKeyCheckers.length === 1 ? primaryKeyCheckers[0] : null);
         var localColl = syncSetting.localCollection;
 
         function convertAndSendItemsToServer(items: E[]): PsPromise<U, SyncError> {
@@ -189,7 +188,7 @@ class SyncDataCollection {
 
             var toSvcObj = syncSetting.toSvcObject;
             var data: S[] = <never>null;
-            if (primaryKey) {
+            if (primaryKeyChecker != null) {
                 data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKeyChecker, toSvcObj);
             }
             else {
@@ -236,7 +235,7 @@ class SyncDataCollection {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
-    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: keyof E, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S> {
+    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: (keyof E) | null, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S> {
         var self = this;
         var dfd = Defer.newDefer<R | null, S>();
 
@@ -253,7 +252,7 @@ class SyncDataCollection {
         syncAction(items).done(function (res) {
             var afterSyncUpUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncUpUpdate", table) : null;
 
-            if (primaryKey) {
+            if (primaryKey != null) {
                 self.updateSinglePrimaryKeyItems(table, items, primaryKey);
             }
             else {

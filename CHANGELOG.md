@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.1](N/A) - 2018-10-20
+### [0.7.2](N/A) - 2018-11-23
+#### Changed
+* Update dependency `ts-promises@0.4.4` (PsPromise.then() type improvement) and `lokijs-collections@0.24.2` (update to ts-mortar@0.15.9)
+* Remove dependency `ts-mortar` since it is indirectly available via `lokijs-collections` dependency
+* Simplify some `SyncDataCollection` logic which didn't need to use ts-mortar `Arrays`
+* Minor README.md update
+
+
+--------
+### [0.7.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/7747c9bf974b1530536f5550c253adcf9c2686e1) - 2018-10-20
 #### Changed
 * Switch `package.json` github dependencies from tag urls to release tarballs to simplify npm install (doesn't require git to npm install tarballs)
 

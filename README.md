@@ -1,4 +1,4 @@
-lokijs-collections Syncing
+lokijs-collections-syncing
 ==============
 
 Sync [lokijs-collections](https://github.com/TeamworkGuy2/lokijs-collections) to or from a remote data source. lokijs-collections are TypeScript collection wrappers for [lokiJS](https://github.com/techfort/LokiJS). 
@@ -12,7 +12,7 @@ See the lokijs-collections [README](https://github.com/TeamworkGuy2/lokijs-colle
 
 Create a sync instance for a data collection:
 ```ts
-var collection = /* ...a lokijs-collections instance */
+var collection = /* a lokijs-collections collection instance */
 
 var collSync = SyncSettingsBuilder.fromDataCollectionAndSyncFuncs(
 		collection,

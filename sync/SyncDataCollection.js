@@ -1,5 +1,4 @@
 "use strict";
-var Arrays = require("ts-mortar/utils/Arrays");
 var Defer = require("ts-promises/Defer");
 /** Combines functionality for two operations in one class:
  *  - Sync a local data collection to a remote data collection (refered to as 'syncing up').
@@ -142,15 +141,15 @@ var SyncDataCollection = /** @class */ (function () {
     SyncDataCollection.prototype.syncUpCollection = function (params, syncSetting) {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
-        var primaryKey = Arrays.getIfOneItem(primaryKeys);
+        var primaryKey = (primaryKeys.length === 1 ? primaryKeys[0] : null);
         var primaryKeyCheckers = syncSetting.hasPrimaryKeyCheckers;
-        var primaryKeyChecker = Arrays.getIfOneItem(primaryKeyCheckers);
+        var primaryKeyChecker = (primaryKeyCheckers.length === 1 ? primaryKeyCheckers[0] : null);
         var localColl = syncSetting.localCollection;
         function convertAndSendItemsToServer(items) {
             var beforeSyncUpPrepTimer = self.notifyActionStart ? self.notifyActionStart("beforeSyncUpPrep", localColl) : null;
             var toSvcObj = syncSetting.toSvcObject;
             var data = null;
-            if (primaryKey) {
+            if (primaryKeyChecker != null) {
                 data = SyncDataCollection.checkAndConvertSingleKeyItems(localColl.getName(), items, primaryKeyChecker, toSvcObj);
             }
             else {
@@ -204,7 +203,7 @@ var SyncDataCollection = /** @class */ (function () {
         }
         syncAction(items).done(function (res) {
             var afterSyncUpUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncUpUpdate", table) : null;
-            if (primaryKey) {
+            if (primaryKey != null) {
                 self.updateSinglePrimaryKeyItems(table, items, primaryKey);
             }
             else {

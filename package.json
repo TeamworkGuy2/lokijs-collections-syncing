@@ -1,6 +1,6 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "lokijs-collections syncing to and from a remote data source",
   "author": "TeamworkGuy2",
   "homepage": "https://github.com/TeamworkGuy2/lokijs-collections-syncing",
@@ -11,9 +11,8 @@
   },
   "dependencies": {
     "@types/q": "~1.5.1",
-    "lokijs-collections": "https://github.com/TeamworkGuy2/lokijs-collections/archive/v0.24.1.tar.gz",
-    "ts-mortar": "https://github.com/TeamworkGuy2/ts-mortar/archive/v0.15.8.tar.gz",
-    "ts-promises": "https://github.com/TeamworkGuy2/ts-promises/archive/v0.4.3.tar.gz"
+    "lokijs-collections": "https://github.com/TeamworkGuy2/lokijs-collections/archive/v0.24.2.tar.gz",
+    "ts-promises": "https://github.com/TeamworkGuy2/ts-promises/archive/v0.4.4.tar.gz"
   },
   "devDependencies": {
     "@types/chai": "~4.1.6",
