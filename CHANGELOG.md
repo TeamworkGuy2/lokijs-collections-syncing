@@ -4,7 +4,16 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.2](N/A) - 2018-11-23
+### [0.7.3](N/A) - 2018-12-29
+#### Changed
+* Update to TypeScript 3.2
+* Update dev and @types/ dependencies
+* Update README.md - usage note and clarified examples
+* Remove `tsconfig.json lib "dom"`
+
+
+--------
+### [0.7.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/63f1bb5224bcc07bc7d2f1cf64d2fc8d356183d2) - 2018-11-23
 #### Changed
 * Update dependency `ts-promises@0.4.4` (PsPromise.then() type improvement) and `lokijs-collections@0.24.2` (update to ts-mortar@0.15.9)
 * Remove dependency `ts-mortar` since it is indirectly available via `lokijs-collections` dependency
