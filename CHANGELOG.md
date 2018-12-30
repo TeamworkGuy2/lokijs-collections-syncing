@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.3](N/A) - 2018-12-29
+### [0.7.4](N/A) - 2018-12-29
+#### Changed
+* Update `lokijs-collections` dependency
+
+
+--------
+### [0.7.3](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/e9a02b2794acf28a5c7d5d6598274970128cc40e) - 2018-12-29
 #### Changed
 * Update to TypeScript 3.2
 * Update dev and @types/ dependencies

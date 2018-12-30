@@ -30,7 +30,7 @@ var collSync = SyncSettingsBuilder.fromDataCollectionAndSyncFuncs(
 ```
 
 
-### Example 1: Configure and run a syncing:
+### Example 1: Configure and run a sync:
 ```ts
 var SyncDataCollection = require("lokijs-collections-syncing/sync/SyncDataCollection");
 
