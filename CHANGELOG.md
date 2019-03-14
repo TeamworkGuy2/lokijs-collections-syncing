@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.4](N/A) - 2018-12-29
+### [0.7.5](N/A) - 2018-3-14
+#### Changed
+* Update dependency `lokijs-collections@0.24.5` for `ts-mortar@0.16.0` update (fix for `Strings.isDigit()`, removal of `Objects.getProps()` and `Strings.endsWith()`, and several other changes)
+
+
+--------
+### [0.7.4](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/0e1eac2cfc55d6c358070360997ec901a035cd20) - 2018-12-29
 #### Changed
 * Update `lokijs-collections` dependency
 
