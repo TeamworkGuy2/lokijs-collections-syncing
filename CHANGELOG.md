@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.5](N/A) - 2018-3-14
+### [0.7.6](N/A) - 2018-3-20
+#### Changed
+* Switch `ts-promises` dependency from github to npm
+
+
+--------
+### [0.7.5](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/97f61b0c15f2a245e425b4df7c578c4e6e463792) - 2018-3-14
 #### Changed
 * Update dependency `lokijs-collections@0.24.5` for `ts-mortar@0.16.0` update (fix for `Strings.isDigit()`, removal of `Objects.getProps()` and `Strings.endsWith()`, and several other changes)
 
