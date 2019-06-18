@@ -4,19 +4,26 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.7](N/A) - 2019-3-21
+### [0.7.8](N/A) - 2019-06-18
+#### Changed
+* Update to TypeScript 3.5
+* Update dependency `lokijs-collections@0.25.0` for major refactor, alpha IndexedDbPersister support, and `ts-mortar@0.18.0`
+
+
+--------
+### [0.7.7](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/aa7f17742c8143350d4bbf560025b35ccd1dabc8) - 2019-03-21
 #### Changed
 * Update dependency `lokijs-collections@0.24.7` for `@twg2/ts-twg-ast-codegen` path fix
 
 
 --------
-### [0.7.6](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/0cc64d783faa828b3f423826153c683fe4c81d18) - 2019-3-20
+### [0.7.6](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/0cc64d783faa828b3f423826153c683fe4c81d18) - 2019-03-20
 #### Changed
 * Switch `ts-promises` dependency from github to npm and to `lokijs-collections@0.24.5`
 
 
 --------
-### [0.7.5](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/97f61b0c15f2a245e425b4df7c578c4e6e463792) - 2019-3-14
+### [0.7.5](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/97f61b0c15f2a245e425b4df7c578c4e6e463792) - 2019-03-14
 #### Changed
 * Update dependency `lokijs-collections@0.24.5` for `ts-mortar@0.16.0` update (fix for `Strings.isDigit()`, removal of `Objects.getProps()` and `Strings.endsWith()`, and several other changes)
 
