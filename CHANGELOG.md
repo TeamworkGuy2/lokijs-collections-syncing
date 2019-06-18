@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.8](N/A) - 2019-06-18
+### [0.7.9](N/A) - 2019-06-18
+#### Changed
+* Update dependency `lokijs-collections@0.25.1` for persister fixes
+
+
+--------
+### [0.7.8](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/01bd9a3815059956634298e6a02895a8b7b07cce) - 2019-06-18
 #### Changed
 * Update to TypeScript 3.5
 * Update dependency `lokijs-collections@0.25.0` for major refactor, alpha IndexedDbPersister support, and `ts-mortar@0.18.0`
