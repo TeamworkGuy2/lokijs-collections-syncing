@@ -17,6 +17,11 @@ declare interface SyncError {
 
 
 /** Settings for syncing server data to and from a local data collection
+ * @template E the client data collection type
+ * @template F the client data collection type with optional properties
+ * @template P the parameters to pass with the items
+ * @template S the server data collection type
+ * @template R the server error
  */
 declare interface SyncSettings<E extends F, F, S, R> {
     localCollection: DataCollection<E, F>;
@@ -30,14 +35,13 @@ declare interface SyncSettings<E extends F, F, S, R> {
 
 
 /** Settings for syncing up (uploading) server data from a local data collection
- * @template E the client data collection type
- * @template F the client data collection type with optional properties
+ * @template E the client data type
  * @template P the parameters to pass with the items
  * @template S the server data collection type
  * @template U the server response
  * @template R the server error
  */
-declare interface SyncUpSettings<E extends F, F, P, S, U, R> {
+declare interface SyncUpSettings<E, P, S, U, R> {
     syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>;
     toSvcObject: (item: E) => S;
 }
@@ -45,24 +49,23 @@ declare interface SyncUpSettings<E extends F, F, P, S, U, R> {
 
 /** Settings for syncing down (downloading) server data to a local data collection
  * @template E the client data collection type
- * @template F the client data collection type with optional properties
  * @template P the parameters to pass with the items
  * @template S the server data collection type
  * @template R the server error
  */
-declare interface SyncDownSettings<E extends F, F, P, S, R> {
+declare interface SyncDownSettings<E, P, S, R> {
     syncDownFunc: (params: P) => PsPromise<S[], R>;
     toLocalObject: (item: S) => E;
 }
 
 
-declare interface SyncSettingsWithUp<E extends F, F, P, S, U, R> extends SyncSettings<E, F, S, R>, SyncUpSettings<E, F, P, S, U, R> {
+declare interface SyncSettingsUp<E extends F, F, P, S, U, R> extends SyncSettings<E, F, S, R>, SyncUpSettings<E, P, S, U, R> {
 }
 
 
-declare interface SyncSettingsWithDown<E extends F, F, P, S, R> extends SyncSettings<E, F, S, R>, SyncDownSettings<E, F, P, S, R> {
+declare interface SyncSettingsDown<E extends F, F, P, S, R> extends SyncSettings<E, F, S, R>, SyncDownSettings<E, P, S, R> {
 }
 
 
-declare interface SyncSettingsWithUpDown<E extends F, F, P, S, U, R> extends SyncSettings<E, F, S, R>, SyncUpSettings<E, F, P, S, U, R>, SyncDownSettings<E, F, P, S, R> {
+declare interface SyncSettingsUpDown<E extends F, F, P, S, U, R> extends SyncSettings<E, F, S, R>, SyncUpSettings<E, P, S, U, R>, SyncDownSettings<E, P, S, R> {
 }

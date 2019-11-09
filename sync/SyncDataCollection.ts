@@ -71,7 +71,7 @@ class SyncDataCollection {
      * @param syncDownOp the type of sync to perform
      * @return a map of 'syncSettingsAry' collection names to the promises that will complete when they finish syncing
      */
-    public syncDownCollections<P, R>(params: P, syncSettingsAry: SyncSettingsWithDown<any, any, P, any, R>[], syncDownOp: SyncDataCollection.SyncDownOp): StringMap<PsPromise<void, SyncError>> {
+    public syncDownCollections<P, R>(params: P, syncSettingsAry: SyncSettingsDown<any, any, P, any, R>[], syncDownOp: SyncDataCollection.SyncDownOp): StringMap<PsPromise<void, SyncError>> {
         var promises: StringMap<PsPromise<void, SyncError>> = {};
 
         // sync each of the tables based on the settings in the passed in array
@@ -175,7 +175,7 @@ class SyncDataCollection {
      * only contains one record and send that one record as an object, rather than sending an
      * array of objects to the service call, false or undefined sends an array of any data in the collection
      */
-    public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsWithUp<E, F, P, S, U, R>): PsPromise<U | null, SyncError> {
+    public syncUpCollection<E extends F, F, P, S, U, R>(params: P, syncSetting: SyncSettingsUp<E, F, P, S, U, R>): PsPromise<U | null, SyncError> {
         var self = this;
         var primaryKeys = syncSetting.primaryKeys;
         var primaryKey = (primaryKeys.length === 1 ? primaryKeys[0] : null);
@@ -321,7 +321,7 @@ class SyncDataCollection {
      * @param isDeletedPropName the name of the property which indicates if an item should be deleted, if value of this property is truthy the item is deleted when the syncing, nullable
      * @param syncDownOp the type of merge/update/add operation to perform with the new items
      */
-    public static createAddUpdateOrRemoveItemsFunc<E extends F, F, P, S, R>(syncSettings: SyncSettingsWithDown<E, F, P, S, R>, isDeletedPropName: keyof S, syncDownOp: SyncDataCollection.SyncDownOp) {
+    public static createAddUpdateOrRemoveItemsFunc<E extends F, F, S>(syncSettings: SyncSettingsDown<E, F, any, S, any>, isDeletedPropName: keyof S, syncDownOp: SyncDataCollection.SyncDownOp) {
         return function addUpdateOrRemoveItemsFunc(items: S[]) {
             var table = syncSettings.localCollection;
             var findFilterFunc = syncSettings.findFilterFunc;

@@ -4,7 +4,21 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.7.10](N/A) - 2019-11-08
+### [0.8.0](N/A) - 2019-11-09
+#### Changed
+* Renamed interfaces:
+  * `SyncSettingsWithUp` -> `SyncSettingsUp`
+  * `SyncSettingsWithDown` -> `SyncSettingsDown`
+  * `SyncSettingsWithUpDown` -> `SyncSettingsUpDown`
+
+#### Removed
+* Remove unused `updateLastSyncDate` field from `SyncDownSettingsImpl`
+* Remove unnecessary `F` generic type from `SyncUpSettings`, `SyncDownSettings`, `SyncUpSettingsImpl`, and `SyncDownSettingsImpl`
+* Remove unused `P` and `R` generic parameters from `SyncDataCollection.createAddUpdateOrRemoveItemsFunc()`
+
+
+--------
+### [0.7.10](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/744380abc048fbe6f9acde6bd3ab419d51fc2e8e) - 2019-11-08
 #### Changed
 * Update to TypeScript 3.7
 

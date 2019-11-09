@@ -84,7 +84,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
     }
 
 
-    public build(): SyncSettingsWithUpDown<E, F, P, S, U, R> {
+    public build(): SyncSettingsUpDown<E, F, P, S, U, R> {
         return this;
     }
 
@@ -215,7 +215,7 @@ module SyncSettingsBuilder {
 
     /** Settings for syncing up (uploading) server data from a local data collection
      */
-    export class SyncUpSettingsImpl<E extends F, F, P, S, U, R> implements SyncUpSettings<E, F, P, S, U, R> {
+    export class SyncUpSettingsImpl<E, P, S, U, R> implements SyncUpSettings<E, P, S, U, R> {
         syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>;
         toSvcObject: (item: E) => S;
 
@@ -226,7 +226,7 @@ module SyncSettingsBuilder {
         }
 
 
-        public static copy<E1 extends F1, F1, P1, S1, U1, R1>(src: SyncUpSettings<E1, F1, P1, S1, U1, R1>) {
+        public static copy<E1, P1, S1, U1, R1>(src: SyncUpSettings<E1, P1, S1, U1, R1>) {
             return new SyncUpSettingsImpl(src.syncUpFunc, src.toSvcObject);
         }
 
@@ -237,10 +237,9 @@ module SyncSettingsBuilder {
 
     /** Settings for syncing down (downloading) server data to a local data collection
      */
-    export class SyncDownSettingsImpl<E extends F, F, P, S, R> implements SyncDownSettings<E, F, P, S, R> {
+    export class SyncDownSettingsImpl<E, P, S, R> implements SyncDownSettings<E, P, S, R> {
         syncDownFunc: (params: P) => PsPromise<S[], R>;
         toLocalObject: (item: any) => E;
-        updateLastSyncDate!: (table: DataCollection<E, F>) => void;
 
 
         constructor(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObj: (item: any) => E) {
@@ -249,7 +248,7 @@ module SyncSettingsBuilder {
         }
 
 
-        public static copy<E1 extends F1, F1, P1, S1, R1>(src: SyncDownSettings<E1, F1, P1, S1, R1>) {
+        public static copy<E1, P1, S1, R1>(src: SyncDownSettings<E1, P1, S1, R1>) {
             return new SyncDownSettingsImpl(src.syncDownFunc, src.toLocalObject);
         }
 
@@ -288,7 +287,7 @@ interface SyncUpBuilderWithUrl<E extends F, F> extends SyncUpBuilder<E, F> {
 
 interface SyncUpAlreadyDownBuilder<E extends F, F, P, S, U, R> {
     addSyncDownFunc(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObject: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
-    build(): SyncSettingsWithUp<E, F, P, S, U, R>;
+    build(): SyncSettingsUp<E, F, P, S, U, R>;
 }
 
 interface SyncUpAlreadyDownBuilderWithUrl<E extends F, F, P, S, U, R> extends SyncUpAlreadyDownBuilder<E, F, P, S, U, R> {
@@ -297,7 +296,7 @@ interface SyncUpAlreadyDownBuilderWithUrl<E extends F, F, P, S, U, R> extends Sy
 
 interface SyncDownAlreadyUpBuilder<E extends F, F, P, S, R> {
     addSyncUpFunc<U>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, toSvcObject: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
-    build(): SyncSettingsWithDown<E, F, P, S, R>;
+    build(): SyncSettingsDown<E, F, P, S, R>;
 }
 
 interface SyncDownAlreadyUpBuilderWithUrl<E extends F, F, P, S, R> extends SyncDownAlreadyUpBuilder<E, F, P, S, R> {
@@ -305,7 +304,7 @@ interface SyncDownAlreadyUpBuilderWithUrl<E extends F, F, P, S, R> extends SyncD
 }
 
 interface BuilderEnd<E extends F, F, P, S, U, R> extends SettingsBuilder<E, F>, SyncDownBuilder<E, F>, SyncUpBuilder<E, F> {
-    build(): SyncSettingsWithUpDown<E, F, P, S, U, R>;
+    build(): SyncSettingsUpDown<E, F, P, S, U, R>;
 }
 
 
