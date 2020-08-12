@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.8.0](N/A) - 2019-11-09
+### [0.8.1](N/A) - 2020-08-12
+#### Changed
+* Update `lokijs-collections` dependency from github URL to new npm version number
+
+
+--------
+### [0.8.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/7c4cac2c647bb8cf5d46d87c881046bfb26eb814) - 2019-11-09
 #### Changed
 * Renamed interfaces:
   * `SyncSettingsWithUp` -> `SyncSettingsUp`

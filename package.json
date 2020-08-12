@@ -1,6 +1,6 @@
 {
   "name": "lokijs-collections-syncing",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "lokijs-collections syncing to and from a remote data source",
   "author": "TeamworkGuy2",
   "homepage": "https://github.com/TeamworkGuy2/lokijs-collections-syncing",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@types/q": "~1.5.1",
-    "lokijs-collections": "https://github.com/TeamworkGuy2/lokijs-collections/archive/v0.25.2.tar.gz",
+    "lokijs-collections": "~0.26.1",
     "ts-promises": "~0.5.2"
   },
   "devDependencies": {
