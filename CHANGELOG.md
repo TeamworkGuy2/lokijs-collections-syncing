@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.8.1](N/A) - 2020-08-12
+### [0.9.0](N/A) - 2020-09-05
+#### Changed
+* Update to TypeScript 4.0
+
+
+--------
+### [0.8.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/4ab2b8ea48a7740c64f3d1e4375a5aaedd0734c5) - 2020-08-12
 #### Changed
 * Update `lokijs-collections` dependency from github URL to new npm version number
 
