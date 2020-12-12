@@ -46,8 +46,12 @@ class SyncDataCollection {
      * @param [notifyActionEnd] optional event listener type function which is called whenever a sync action finishes, see {@link SyncAction}. Note: this method is only called if the action is successful, see 'notifyActionFailure'
      * @param [notifyActionFailure] optional event listener type function which is called whenever a sync action fails, see {@link SyncAction}
      */
-    constructor(getLastSyncDownTimestamp: (table: DataCollection<any, any>) => number, updateLastSyncDownTimestamp: (table: DataCollection<any, any>) => void,
-        isDeletedPropName: string, isSynchedPropName: string, lastModifiedPropName: string,
+    constructor(
+        getLastSyncDownTimestamp: (table: DataCollection<any, any>) => number,
+        updateLastSyncDownTimestamp: (table: DataCollection<any, any>) => void,
+        isDeletedPropName: string,
+        isSynchedPropName: string,
+        lastModifiedPropName: string,
         notifyActionStart?: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>) => any,
         notifyActionEnd?: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any) => void,
         notifyActionFailure?: (action: SyncDataCollection.SyncAction, table: DataCollection<any, any>, startTimerKey: any, err: any) => void
@@ -95,8 +99,10 @@ class SyncDataCollection {
      * @template R1 the sync down function error type
      * @template R2 the process results callback error type
      */
-    public syncDownCollection<E extends F, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>, syncDownFunc: (params: P) => PsPromise<S, R1>,
-            processResultsCallback: (results: S) => void | PsPromise<void, R2>): PsPromise<void, SyncError> {
+    public syncDownCollection<E extends F, F, P, S, R1, R2>(params: P, table: DataCollection<E, F>,
+        syncDownFunc: (params: P) => PsPromise<S, R1>,
+        processResultsCallback: (results: S) => void | PsPromise<void, R2>
+    ): PsPromise<void, SyncError> {
         var self = this;
         var dfd = Defer.newDefer<void, SyncError>();
 
@@ -235,6 +241,8 @@ class SyncDataCollection {
      * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
      * @param syncAction the action which performs the data sync
      */
+    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: (keyof E) | null, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S>;
+    public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: (keyof E), primaryKeys: (keyof E)[] | null, syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S>;
     public syncUpAndUpdateCollection<E extends F, F, R, S>(table: DataCollection<E, F>, primaryKey: (keyof E) | null, primaryKeys: (keyof E)[], syncAction: (items: E[]) => PsPromise<R, S>): PsPromise<R | null, S> {
         var self = this;
         var dfd = Defer.newDefer<R | null, S>();
@@ -464,7 +472,6 @@ module SyncDataCollection {
         }
 
     }
-
 
 
 

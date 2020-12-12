@@ -96,21 +96,21 @@ var SyncSettingsBuilder = /** @class */ (function () {
         inst.copyObjectFunc = settings.copyObjectFunc;
         return inst;
     };
-    SyncSettingsBuilder.fromDataCollectionAndSyncFuncs = function (table, syncDownFunc, syncUpFunc) {
-        var tableModel = table.getDataModel();
-        var tableFuncs = table.getDataModelFuncs();
+    SyncSettingsBuilder.fromDataCollectionAndSyncFuncs = function (localCollection, syncDownFunc, syncUpFunc) {
+        var collModel = localCollection.getDataModel();
+        var collFuncs = localCollection.getDataModelFuncs();
         var inst = new SyncSettingsBuilder();
         // sync settings
-        inst.localCollection = table;
-        inst.primaryKeys = tableModel.primaryKeys;
-        inst.hasPrimaryKeyCheckers = tableModel.primaryKeys.map(function (k) { return function (itm) { return !!itm[k]; }; });
-        inst.copyObjectFunc = tableFuncs.copyFunc;
+        inst.localCollection = localCollection;
+        inst.primaryKeys = collModel.primaryKeys;
+        inst.hasPrimaryKeyCheckers = collModel.primaryKeys.map(function (k) { return function (itm) { return !!itm[k]; }; });
+        inst.copyObjectFunc = collFuncs.copyFunc;
         // sync down
         inst.syncDownFunc = syncDownFunc;
-        inst.toLocalObject = tableFuncs.toLocalObject;
+        inst.toLocalObject = collFuncs.toLocalObject;
         // sync up
         inst.syncUpFunc = syncUpFunc;
-        inst.toSvcObject = tableFuncs.toSvcObject;
+        inst.toSvcObject = collFuncs.toSvcObject;
         return {
             addFilterFuncs: function (findFilterFunc) {
                 inst.findFilterFunc = findFilterFunc;

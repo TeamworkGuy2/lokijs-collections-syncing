@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.9.0](N/A) - 2020-09-05
+### [0.9.1](N/A) - 2020-12-11
+#### Changed
+* Improve `syncUpAndUpdateCollection()` type signature to support either null `primaryKey` or null `primaryKeys` but not both
+
+
+--------
+### [0.9.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/6ab12c05a18606eaa5c6ba1ce4fd1f89dcd73b63) - 2020-09-05
 #### Changed
 * Update to TypeScript 4.0
 

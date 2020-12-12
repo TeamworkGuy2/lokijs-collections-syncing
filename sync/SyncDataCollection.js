@@ -177,19 +177,6 @@ var SyncDataCollection = /** @class */ (function () {
         }
         return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, convertAndSendItemsToServer);
     };
-    /** A wrapper around a 'syncAction' function that syncs data to a destination.
-     * This function loads the items from storage for 'syncAction' and is called back if the data transfer is successful or not.
-     * If the transfer is successful, the items in storage are updated to reflect that a sync has occurred.
-     * @template E the local collection data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @template F the local collection data model with optional properties. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @template R the 'syncAction' response type
-     * @template S the remote data model. This type should contain deleted, synched, and last modified properties corresponding to the prop names passed to the constructor
-     * @param dfd deferred object to reject or resolve once 'syncAction' has completed or failed
-     * @param table the data source where data can be updated or retrieved
-     * @param primaryKey the table data model's primary key, this or 'primaryKeys' must not be null, 'primaryKey' takes recedence
-     * @param primaryKeys the table data model's primary keys, this or 'primaryKey' must not be null
-     * @param syncAction the action which performs the data sync
-     */
     SyncDataCollection.prototype.syncUpAndUpdateCollection = function (table, primaryKey, primaryKeys, syncAction) {
         var self = this;
         var dfd = Defer.newDefer();
