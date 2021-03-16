@@ -102,7 +102,7 @@ var SyncDataCollection = /** @class */ (function () {
             var syncDownTimer = this.notifyActionStart ? this.notifyActionStart("syncDown", table) : null;
             var isAfterSync = false;
             var afterSyncDownUpdateTimer = null;
-            syncDownFunc(params).done(function (items) {
+            syncDownFunc(params).then(function (items) {
                 try {
                     if (self.notifyActionEnd) {
                         self.notifyActionEnd("syncDown", table, syncDownTimer);
@@ -120,7 +120,7 @@ var SyncDataCollection = /** @class */ (function () {
                 catch (err) {
                     syncFailure(err);
                 }
-            }, syncFailure);
+            }).catch(syncFailure);
         }
         catch (err) {
             syncFailure(err);
@@ -188,7 +188,7 @@ var SyncDataCollection = /** @class */ (function () {
             dfd.resolve(null);
             return dfd.promise;
         }
-        syncAction(items).done(function (res) {
+        syncAction(items).then(function (res) {
             var afterSyncUpUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncUpUpdate", table) : null;
             if (primaryKey != null) {
                 self.updateSinglePrimaryKeyItems(table, items, primaryKey);
@@ -200,7 +200,7 @@ var SyncDataCollection = /** @class */ (function () {
                 self.notifyActionEnd("afterSyncUpUpdate", table, afterSyncUpUpdateTimer);
             }
             dfd.resolve(res);
-        }, function (err) {
+        }).catch(function (err) {
             dfd.reject(err);
         });
         return dfd.promise;

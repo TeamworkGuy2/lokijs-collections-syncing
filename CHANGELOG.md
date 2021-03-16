@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.9.1](N/A) - 2020-12-11
+### [0.10.0](N/A) - 2021-03-16
+#### Changed
+* Update dependencies for `Q` removal
+
+
+--------
+### [0.9.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/86c105632f25c0b6cf7cc704f88bbf21a75f627b) - 2020-12-11
 #### Changed
 * Improve `syncUpAndUpdateCollection()` type signature to support either null `primaryKey` or null `primaryKeys` but not both
 

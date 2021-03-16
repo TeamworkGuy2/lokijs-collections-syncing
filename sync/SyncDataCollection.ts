@@ -143,7 +143,7 @@ class SyncDataCollection {
             var isAfterSync = false;
             var afterSyncDownUpdateTimer: any = null;
 
-            syncDownFunc(params).done(function (items) {
+            syncDownFunc(params).then(function (items) {
                 try {
                     if (self.notifyActionEnd) {
                         self.notifyActionEnd("syncDown", table, syncDownTimer);
@@ -161,7 +161,7 @@ class SyncDataCollection {
                 } catch (err) {
                     syncFailure(err);
                 }
-            }, syncFailure);
+            }).catch(syncFailure);
         } catch (err) {
             syncFailure(err);
         }
@@ -257,7 +257,7 @@ class SyncDataCollection {
             return dfd.promise;
         }
 
-        syncAction(items).done(function (res) {
+        syncAction(items).then(function (res) {
             var afterSyncUpUpdateTimer = self.notifyActionStart ? self.notifyActionStart("afterSyncUpUpdate", table) : null;
 
             if (primaryKey != null) {
@@ -272,7 +272,7 @@ class SyncDataCollection {
             }
 
             dfd.resolve(res);
-        }, function (err) {
+        }).catch(function (err) {
             dfd.reject(err);
         });
         return dfd.promise;
