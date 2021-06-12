@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.10.0](N/A) - 2021-03-16
+### [0.11.0](N/A) - 2021-06-12
+#### Changed
+* Update to TypeScript 4.3
+
+
+--------
+### [0.10.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/99134a2b9187bbc71c7709c46dcc0b7a8818a0dd) - 2021-03-16
 #### Changed
 * Update dependencies for `Q` removal
 
