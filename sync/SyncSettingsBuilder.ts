@@ -22,7 +22,7 @@
  * @author TeamworkGuy2
  * @since 2016-3-7
  */
-class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder<E, F> {
+class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SyncSettingsBuilder.SettingsBuilder<E, F> {
     // sync settings
     localCollection!: DataCollection<E, F>;
     primaryKeys!: (keyof E & string)[];
@@ -112,7 +112,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
         copyObjectFunc: (item: E) => E,
         convertUrlToSyncDownFunc: (url: string) => (params: any) => PsPromise<any[], R>,
         convertUrlToSyncUpFunc: (url: string) => (params: any, items: any[]) => PsPromise<any, R>
-    ): SyncDownBuilderWithUrl<E, F> & SyncUpBuilderWithUrl<E, F> {
+    ): SyncSettingsBuilder.SyncDownBuilderWithUrl<E, F> & SyncSettingsBuilder.SyncUpBuilderWithUrl<E, F> {
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
@@ -132,7 +132,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
         hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
         findFilterFunc: (item: any) => any,
         copyObjectFunc: (item: E) => E
-    ): SyncDownBuilder<E, F> & SyncUpBuilder<E, F> {
+    ): SyncSettingsBuilder.SyncDownBuilder<E, F> & SyncSettingsBuilder.SyncUpBuilder<E, F> {
 
         var inst = new SyncSettingsBuilder<E, F, any, any, any, R>();
         inst.localCollection = localCollection;
@@ -144,7 +144,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
     }
 
 
-    public static fromSettingsObj<E extends F, F, S, R>(settings: SyncSettings<E, F, S, R>): SyncDownBuilder<E, F> & SyncUpBuilder<E, F> {
+    public static fromSettingsObj<E extends F, F, S, R>(settings: SyncSettings<E, F, S, R>): SyncSettingsBuilder.SyncDownBuilder<E, F> & SyncSettingsBuilder.SyncUpBuilder<E, F> {
         var inst = new SyncSettingsBuilder<E, F, S, any, any, R>();
         inst.localCollection = settings.localCollection;
         inst.primaryKeys = settings.primaryKeys;
@@ -159,7 +159,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SettingsBuilder
         localCollection: DataCollection<E, F>,
         syncDownFunc: (params: P) => PsPromise<S[], R>,
         syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>
-    ): { addFilterFuncs: (findFilterFunc: (item: S) => F) => BuilderEnd<E, F, P, S, U, R> } {
+    ): { addFilterFuncs: (findFilterFunc: (item: S) => F) => SyncSettingsBuilder.BuilderEnd<E, F, P, S, U, R> } {
 
         var collModel = localCollection.getDataModel();
         var collFuncs = <DtoAllFuncs<E, S>>localCollection.getDataModelFuncs();
@@ -270,58 +270,56 @@ module SyncSettingsBuilder {
 
     }
 
+
+    // ==== interfaces for building sync settings ====
+    export interface SettingsBuilder<E extends F, F> {
+        addSettings<S>(
+            localCollection: DataCollection<E, F>,
+            primaryKeys: string | string[],
+            hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
+            findFilterFunc: (item: S) => F,
+            copyObjectFunc: (item: E) => E
+        ): SyncDownBuilder<E, F> & SyncUpBuilder<E, F>;
+    }
+
+    export interface SyncDownBuilder<E extends F, F> {
+        addSyncDownFunc<P, S, R>(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObject: (item: S) => E): SyncDownAlreadyUpBuilder<E, F, P, S, R>;
+    }
+
+    export interface SyncDownBuilderWithUrl<E extends F, F> extends SyncDownBuilder<E, F> {
+        addSyncDownUrl<P, S, R>(syncDownUrl: string, toLocalObject: (item: S) => E): SyncDownAlreadyUpBuilderWithUrl<E, F, P, S, R>;
+    }
+
+    export interface SyncUpBuilder<E extends F, F> {
+        addSyncUpFunc<P, S, U, R>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, toSvcObject: (item: E) => S): SyncUpAlreadyDownBuilder<E, F, P, S, U, R>;
+    }
+
+    export interface SyncUpBuilderWithUrl<E extends F, F> extends SyncUpBuilder<E, F> {
+        addSyncUpUrl<P, S, U, R>(syncUpUrl: string, toSvcObject: (item: E) => S): SyncUpAlreadyDownBuilderWithUrl<E, F, P, S, U, R>;
+    }
+
+    export interface SyncUpAlreadyDownBuilder<E extends F, F, P, S, U, R> {
+        addSyncDownFunc(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObject: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
+        build(): SyncSettingsUp<E, F, P, S, U, R>;
+    }
+
+    export interface SyncUpAlreadyDownBuilderWithUrl<E extends F, F, P, S, U, R> extends SyncUpAlreadyDownBuilder<E, F, P, S, U, R> {
+        addSyncDownUrl(syncDownUrl: string, toLocalObject: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
+    }
+
+    export interface SyncDownAlreadyUpBuilder<E extends F, F, P, S, R> {
+        addSyncUpFunc<U>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, toSvcObject: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
+        build(): SyncSettingsDown<E, F, P, S, R>;
+    }
+
+    export interface SyncDownAlreadyUpBuilderWithUrl<E extends F, F, P, S, R> extends SyncDownAlreadyUpBuilder<E, F, P, S, R> {
+        addSyncUpUrl<U>(syncUpUrl: string, toSvcObject: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
+    }
+
+    export interface BuilderEnd<E extends F, F, P, S, U, R> extends SettingsBuilder<E, F>, SyncDownBuilder<E, F>, SyncUpBuilder<E, F> {
+        build(): SyncSettingsUpDown<E, F, P, S, U, R>;
+    }
+
 }
-
-
-// ==== interfaces for building sync settings ====
-interface SettingsBuilder<E extends F, F> {
-    addSettings<S>(
-        localCollection: DataCollection<E, F>,
-        primaryKeys: string | string[],
-        hasPrimaryKeyCheckers: ((obj: E) => boolean) | ((obj: E) => boolean)[],
-        findFilterFunc: (item: S) => F,
-        copyObjectFunc: (item: E) => E
-    ): SyncDownBuilder<E, F> & SyncUpBuilder<E, F>;
-}
-
-
-interface SyncDownBuilder<E extends F, F> {
-    addSyncDownFunc<P, S, R>(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObject: (item: S) => E): SyncDownAlreadyUpBuilder<E, F, P, S, R>;
-}
-
-interface SyncDownBuilderWithUrl<E extends F, F> extends SyncDownBuilder<E, F> {
-    addSyncDownUrl<P, S, R>(syncDownUrl: string, toLocalObject: (item: S) => E): SyncDownAlreadyUpBuilderWithUrl<E, F, P, S, R>;
-}
-
-interface SyncUpBuilder<E extends F, F> {
-    addSyncUpFunc<P, S, U, R>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, toSvcObject: (item: E) => S): SyncUpAlreadyDownBuilder<E, F, P, S, U, R>;
-}
-
-interface SyncUpBuilderWithUrl<E extends F, F> extends SyncUpBuilder<E, F> {
-    addSyncUpUrl<P, S, U, R>(syncUpUrl: string, toSvcObject: (item: E) => S): SyncUpAlreadyDownBuilderWithUrl<E, F, P, S, U, R>;
-}
-
-interface SyncUpAlreadyDownBuilder<E extends F, F, P, S, U, R> {
-    addSyncDownFunc(syncDownFunc: (params: P) => PsPromise<S[], R>, toLocalObject: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
-    build(): SyncSettingsUp<E, F, P, S, U, R>;
-}
-
-interface SyncUpAlreadyDownBuilderWithUrl<E extends F, F, P, S, U, R> extends SyncUpAlreadyDownBuilder<E, F, P, S, U, R> {
-    addSyncDownUrl(syncDownUrl: string, toLocalObject: (item: S) => E): BuilderEnd<E, F, P, S, U, R>;
-}
-
-interface SyncDownAlreadyUpBuilder<E extends F, F, P, S, R> {
-    addSyncUpFunc<U>(syncUpFunc: (params: P, items: S[]) => PsPromise<U, R>, toSvcObject: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
-    build(): SyncSettingsDown<E, F, P, S, R>;
-}
-
-interface SyncDownAlreadyUpBuilderWithUrl<E extends F, F, P, S, R> extends SyncDownAlreadyUpBuilder<E, F, P, S, R> {
-    addSyncUpUrl<U>(syncUpUrl: string, toSvcObject: (item: E) => S): BuilderEnd<E, F, P, S, U, R>;
-}
-
-interface BuilderEnd<E extends F, F, P, S, U, R> extends SettingsBuilder<E, F>, SyncDownBuilder<E, F>, SyncUpBuilder<E, F> {
-    build(): SyncSettingsUpDown<E, F, P, S, U, R>;
-}
-
 
 export = SyncSettingsBuilder;

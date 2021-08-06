@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.0](N/A) - 2021-06-12
+### [0.11.1](N/A) - 2021-08-06
+#### Changed
+* Export all SyncSettingsBuilder interfaces
+
+
+--------
+### [0.11.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/4343fa18f68d09c2b43745bfd3723eaa1c099683) - 2021-06-12
 #### Changed
 * Update to TypeScript 4.3
 
