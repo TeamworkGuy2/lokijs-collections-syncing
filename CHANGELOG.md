@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.1](N/A) - 2021-08-06
+### [0.11.2](N/A) - 2021-08-30
+#### Fixed
+* Fix an issue with this package being used by a project that does not have tsconfig 'strict' enabled
+
+
+--------
+### [0.11.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/98f0758973ebd74f4cf918c3e17792cd980f7871) - 2021-08-06
 #### Changed
 * Export all SyncSettingsBuilder interfaces
 

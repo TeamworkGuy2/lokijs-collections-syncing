@@ -153,7 +153,7 @@ class SyncDataCollection {
 
                     var promise = processResultsCallback(items);
 
-                    if (promise != null && promise["then"]) {
+                    if (promise != null && (<PsPromise<void, R2>>promise)["then"]) {
                         (<PsPromise<void, R2>>promise).then(saveData, syncFailure);
                     } else {
                         saveData();
