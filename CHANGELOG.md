@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.11.2](N/A) - 2021-08-30
+### [0.12.0](N/A) - 2020-10-01
+#### Changed
+* Update `lokijs-collections` dependency from `0.29.*` to `0.30.*`
+
+
+--------
+### [0.11.2](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/1901211b11eb9d4f5285834af4a9dce0ede6e656) - 2021-08-30
 #### Fixed
 * Fix an issue with this package being used by a project that does not have tsconfig 'strict' enabled
 
