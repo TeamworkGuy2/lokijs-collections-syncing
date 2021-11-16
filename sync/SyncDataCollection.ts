@@ -252,7 +252,7 @@ class SyncDataCollection {
 
         var items = table.data(synchedProp);
         // if no items require syncing, resolve and return immediately
-        if (items.length === 0) {
+        if (items.length === 0 && (<any>table).collection?.dirty !== true) {
             dfd.resolve(null);
             return dfd.promise;
         }

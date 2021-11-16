@@ -178,13 +178,14 @@ var SyncDataCollection = /** @class */ (function () {
         return this.syncUpAndUpdateCollection(localColl, primaryKey, primaryKeys, convertAndSendItemsToServer);
     };
     SyncDataCollection.prototype.syncUpAndUpdateCollection = function (table, primaryKey, primaryKeys, syncAction) {
+        var _a;
         var self = this;
         var dfd = Defer.newDefer();
         var synchedProp = {};
         synchedProp[this.isSynchedPropName] = false;
         var items = table.data(synchedProp);
         // if no items require syncing, resolve and return immediately
-        if (items.length === 0) {
+        if (items.length === 0 && ((_a = table.collection) === null || _a === void 0 ? void 0 : _a.dirty) !== true) {
             dfd.resolve(null);
             return dfd.promise;
         }

@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.12.0](N/A) - 2020-10-01
+### [0.13.0](N/A) - 2021-11-15
+#### Fixed
+* `SyncDataCollection.syncUpAndUpdateCollection()` only skips calling back the `syncAction` if there are no items to sync AND the collection is NOT dirty
+
+
+--------
+### [0.12.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/2777fdcdf8c3c374403767caff02d482174f7bd8) - 2020-10-01
 #### Changed
 * Update `lokijs-collections` dependency from `0.29.*` to `0.30.*`
 
@@ -18,7 +24,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 --------
 ### [0.11.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/98f0758973ebd74f4cf918c3e17792cd980f7871) - 2021-08-06
 #### Changed
-* Export all SyncSettingsBuilder interfaces
+* Export all `SyncSettingsBuilder` interfaces
 
 
 --------
@@ -36,7 +42,7 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 --------
 ### [0.9.1](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/86c105632f25c0b6cf7cc704f88bbf21a75f627b) - 2020-12-11
 #### Changed
-* Improve `syncUpAndUpdateCollection()` type signature to support either null `primaryKey` or null `primaryKeys` but not both
+* Improve `SyncDataCollection.syncUpAndUpdateCollection()` type signature to support either null `primaryKey` or null `primaryKeys` but not both
 
 
 --------
