@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-### [0.13.0](N/A) - 2021-11-15
+### [0.14.0](N/A) - 2022-01-02
+#### Changed
+* Update to TypeScript 4.4
+
+
+--------
+### [0.13.0](https://github.com/TeamworkGuy2/lokijs-collections-syncing/commit/d9e8ec8d9b7c21dede62ade4841bc79e241b6040) - 2021-11-15
 #### Fixed
 * `SyncDataCollection.syncUpAndUpdateCollection()` only skips calling back the `syncAction` if there are no items to sync AND the collection is NOT dirty
 

@@ -2,11 +2,14 @@ lokijs-collections-syncing
 ==============
 
 Sync [lokijs-collections](https://github.com/TeamworkGuy2/lokijs-collections) to or from a remote data source.
-To use this library your `lokijs-collections` models need to have a deleted property/flag that is truthy/falsey, a modified property/flag that is truthy/falsey, a last modified timestamp property (unix style millisecond epoch timestamp).
+To use this library your `lokijs-collections` models need to have 3 properties:
+* deleted property (truthy/falsey
+* modified property (truthy/falsey)
+* last modified property (timestamp - unix style milliseconds since epoch).
 See the lokijs-collections [README](https://github.com/TeamworkGuy2/lokijs-collections/blob/master/README.md) for more info on creating and using collections.
 
 ## Usage
-This project is designed to be imported using commonJs require(...) calls. To use this in a web app, it's currently setup to be required and then included in a bundle at build time.
+This project is designed to be imported using commonJs `require(...)` calls. To use this in a web app, it's currently setup to be required and then included in a bundle at build time.
 
 ## Setup
 `sync/SyncSettingsBuilder` is used to create settings objects containing information and functions needed to sync a data collection.

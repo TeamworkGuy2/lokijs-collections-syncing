@@ -132,7 +132,7 @@ class SyncDataCollection {
                     self.notifyActionEnd("afterSyncDownUpdate", table, afterSyncDownUpdateTimer);
                 }
             } catch (err) {
-                syncFailure(err);
+                syncFailure(<any>err);
                 return;
             }
             dfd.resolve(<undefined><any>null);
@@ -159,11 +159,11 @@ class SyncDataCollection {
                         saveData();
                     }
                 } catch (err) {
-                    syncFailure(err);
+                    syncFailure(<any>err);
                 }
             }).catch(syncFailure);
         } catch (err) {
-            syncFailure(err);
+            syncFailure(<any>err);
         }
 
         return dfd.promise;
