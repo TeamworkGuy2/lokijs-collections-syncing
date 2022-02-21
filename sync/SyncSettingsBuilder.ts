@@ -162,7 +162,7 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SyncSettingsBui
     ): { addFilterFuncs: (findFilterFunc: (item: S) => F) => SyncSettingsBuilder.BuilderEnd<E, F, P, S, U, R> } {
 
         var collModel = localCollection.getDataModel();
-        var collFuncs = <DtoAllFuncs<E, S>>localCollection.getDataModelFuncs();
+        var collFuncs = localCollection.getDataModelFuncs();
         var inst = new SyncSettingsBuilder<E, F, P, S, U, R>();
         // sync settings
         inst.localCollection = localCollection;
@@ -171,10 +171,10 @@ class SyncSettingsBuilder<E extends F, F, P, S, U, R> implements SyncSettingsBui
         inst.copyObjectFunc = collFuncs.copyFunc;
         // sync down
         inst.syncDownFunc = syncDownFunc;
-        inst.toLocalObject = collFuncs.toLocalObject;
+        inst.toLocalObject = collFuncs.toLocalObject!;
         // sync up
         inst.syncUpFunc = syncUpFunc;
-        inst.toSvcObject = collFuncs.toSvcObject;
+        inst.toSvcObject = collFuncs.toSvcObject!;
 
         return {
             addFilterFuncs: function (findFilterFunc: (item: S) => F) {
